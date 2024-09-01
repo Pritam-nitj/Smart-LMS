@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Member Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        nav {
+            margin-bottom: 20px;
+        }
+        nav .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            font-size: 1.1rem;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .card {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #343a40;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 2px solid #495057;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+        .form-control {
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Member Dashboard - Library Management System</h1>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">LMS Member</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#searchBooks">Search Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#viewIssuedBooks">View Issued Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#payFines">Pay Fines</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Search Books Section -->
+        <section id="searchBooks" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    Search Books
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Find a Book</h5>
+                    <form id="searchForm">
+                        <div class="form-group">
+                            <label for="searchQuery">Search Query</label>
+                            <input type="text" class="form-control" id="searchQuery" placeholder="Enter book title, author, or ISBN" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- View Issued Books Section -->
+        <section id="viewIssuedBooks" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    View Issued Books
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Your Issued Books</h5>
+                    <p id="issuedBooksList">Loading issued books...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pay Fines Section -->
+        <section id="payFines" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    Pay Fines
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Pay Your Fines</h5>
+                    <form id="fineForm">
+                        <div class="form-group">
+                            <label for="memberID">Member ID</label>
+                            <input type="text" class="form-control" id="memberID" placeholder="Enter your member ID" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fineAmount">Fine Amount</label>
+                            <input type="number" class="form-control" id="fineAmount" placeholder="Enter amount to pay" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Pay Fine</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Library Management System Project. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
