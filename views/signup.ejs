@@ -13,15 +13,12 @@
         <form action="/signup" method="POST">
             <div class="mb-4">
                 <label for="role" class="block text-sm font-medium text-gray-700">Sign Up as:</label>
-                <select id="role" name="role" class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="admin">Admin</option>
-                    <option value="member">Member</option>
-                </select>
+                <input type="role" id="role" name="role" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm" placeholder="Admin Or Member">
             </div>
 
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
-                <input type="text" id="name" name="name" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <input type="text" id="username" name="username" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
             </div>
 
             <div class="mb-4">
