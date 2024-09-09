@@ -62,7 +62,7 @@
 <body>
 
     <header>
-        <h1>Admin Dashboard</h1>
+        <h1>Librarian Dashboard</h1>
     </header>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -89,6 +89,39 @@
             </div>
         </div>
     </nav>
+
+    <div class="container">
+        <!-- Issue/Return Books Section -->
+        <section id="issueReturn" class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    Issue/Return Books
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Issue or Return a Book</h5>
+                    <form id="issueReturnForm">
+                        <div class="form-group">
+                            <label for="bookID">Book ID</label>
+                            <input type="text" class="form-control" id="bookID" placeholder="Enter Book ID" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memberID">Member ID</label>
+                            <input type="text" class="form-control" id="memberID" placeholder="Enter Member ID" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="action">Action</label>
+                            <select class="form-control" id="action" required>
+                                <option value="">Select Action</option>
+                                <option value="issue">Issue</option>
+                                <option value="return">Return</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
         <!-- Generate Report Section -->
         <section id="generateReport" class="mb-5">
             <div class="card">
@@ -117,5 +150,10 @@
     <footer>
         <p>&copy; 2024 Library Management System Project. All Rights Reserved.</p>
     </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 </body>
 </html>

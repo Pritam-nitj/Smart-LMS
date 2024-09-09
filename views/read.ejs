@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100 p-10">
     <h1 class="text-3xl text-center mb-10">Registered Members</h1>
-
+    <a class="text-blue-500" href="/Librarian">Back to home</a>
     <div class="overflow-x-auto">
         <table class="table-auto border-collapse w-full">
             <thead>
@@ -21,17 +21,22 @@
                 </tr>
             </thead>
             <tbody>
-                <% users.forEach(member => { %>
+                <% if(users.length>0){ %>
+                <% users.forEach(function(member) { %>
+                    <% if(member.role === "member"){ %> 
+
                     <tr class="bg-white border-t">
                         <td class="px-4 py-2"><%= member.role %></td>
                         <td class="px-4 py-2"><%= member.username %></td>
                         <td class="px-4 py-2"><%= member.fathersName %></td>
                         <td class="px-4 py-2"><%= member.email %></td>
-                        <td class="px-4 py-2">
-                            <a class="text-red-500" class="" href="/deleteUser/<%= member._id %>">Delete User</a>
-                        </td>
+                        <td class="px-4 py-2"><a class="text-red-500" class="" href="/deleteUser/<%= member._id %>">Delete User</a></td>
                     </tr>
+                    <% } %>
                 <% }) %>
+                <% } else { %>
+                    <h3 class="text-zinc-500">No Users Yet!</h3>
+                <% } %>
             </tbody>
         </table>
     </div>

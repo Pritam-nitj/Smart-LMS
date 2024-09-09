@@ -17,7 +17,7 @@ app.get('/',function(req,res){
     res.render("index");
 })
 
-app.get('/signup',function(req,res){
+app.get('/Signup',function(req,res){
     res.render("signup");
 })
 
@@ -34,8 +34,9 @@ app.post('/signup',function(req,res){
             });
             let token = jwt.sign({email},"shhhhhhhuuuuttt");
             res.cookie("token",token);
-            if(role === "member") res.render("member")
-            else res.render("admin")
+            if(role === "member") res.redirect("/Member");
+            if(role === "admin") res.redirect("/Admin")
+            else res.redirect('/Librarian')
         });
     })
 })
@@ -43,19 +44,34 @@ app.post('/signup',function(req,res){
 app.post("/login",async function(req,res){
     let user = await userModel.findOne({email: req.body.email})
     if(!user) return res.send("Email Or Password Incorrect!")
+
+    if(req.body.role != user.role) return res.send("Email or Password Incorrect!")
     
     bcrypt.compare(req.body.password,user.password,function(err,result){
         if(result){
             let token = jwt.sign({email: user.email},"shhhhhhhuuuuttt");
             res.cookie("token",token);
-            if(req.body.role ==="member") res.render("member");
-            else res.render("admin")
+            if(req.body.role ==="member") res.redirect('/Member');
+            else if(req.body.role === "admin") res.redirect('/Admin')
+            else res.redirect('/Librarian')
         }
         else  res.send("Access Denied!")
     })
 })
 
-app.get('/login',function(req,res){
+app.get('/Librarian',function(req,res){
+    res.render("librarian")
+})
+
+app.get('/Member',function(req,res){
+    res.render("member")
+})
+
+app.get('/Admin',function(req,res){
+    res.render("admin")
+})
+
+app.get('/Login',function(req,res){
     res.render("login");
 })
 
