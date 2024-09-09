@@ -22,12 +22,13 @@ app.get('/signup',function(req,res){
 })
 
 app.post('/signup',function(req,res){
-    let {role,username,email,password} = req.body;
+    let {role,username,fathersName,email,password} = req.body;
     bcrypt.genSalt(10,(err,salt)=>{
         bcrypt.hash(password,salt,async(err,hash)=>{
             let createdUser = await userModel.create({
                 role,
                 username,
+                fathersName,
                 email,
                 password: hash
             });

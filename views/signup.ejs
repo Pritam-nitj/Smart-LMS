@@ -12,23 +12,31 @@
         <h2 class="text-2xl font-semibold text-center mb-6">Sign Up</h2>
         <form action="/signup" method="POST">
             <div class="mb-4">
-                <label for="role" class="block text-sm font-medium text-gray-700">Sign Up as:</label>
-                <input type="role" id="role" name="role" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm" placeholder="Admin Or Member">
+                <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
+                <input type="text" name="username" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
             </div>
 
             <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
-                <input type="text" id="username" name="username" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <label for="fatherName" class="block text-sm font-medium text-gray-700">Father's Name:</label>
+                <input type="text" name="fathersName" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
             </div>
 
+            <div class="mb-4">
+                <label for="role" class="block text-sm font-medium text-gray-700">Sign Up as:</label>
+                <select name="role" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="admin">Admin</option>
+                    <option value="member">Member</option>
+                </select>
+            </div>
+            
             <div class="mb-4">
                 <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
-                <input type="email" id="email" name="email" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <input type="email" name="email" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
             </div>
 
             <div class="mb-4">
                 <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
-                <input type="password" id="password" name="password" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                <input type="password" name="password" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
             </div>
 
             <div class="mb-4">
