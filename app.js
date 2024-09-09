@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const userModel = require('./models/user');
+const bookModel = require('./models/book');
+
 
 app.set('view engine', 'ejs');
 
@@ -87,10 +89,34 @@ app.get('/read',async(req,res)=>{
     res.render('read',{users: allUsers});
 })
 
+app.get('/readA',async(req,res)=>{
+    let allUsers = await userModel.find();
+    res.render('readAdmin',{users: allUsers});
+})
+
 app.get('/deleteUser/:id',async(req,res)=>{
     let users = await userModel.findOneAndDelete({_id: req.params.id});
     res.redirect('/read');
 })
 
+app.get('/add',function(req,res){
+    res.render('addBook')
+})
+
+app.post('/addBook',async function(req,res){
+let {image,title,author,ISBN} = req.body;
+    let createdBook = await bookModel.create({
+        image,
+        title,
+        author,
+        ISBN
+    });
+    res.redirect('/add')         
+});
+
+app.get('/showBook',async function(req,res){
+    let allbooks = await bookModel.find();
+    res.render('showBook',{books: allbooks})
+})
 
 app.listen(3000);

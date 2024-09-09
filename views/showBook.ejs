@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <div class="w-full h-full bg-zinc-900 p-10 text-white">
+        <a class="text-blue-500" href="/Librarian">Back to home</a>
+        <h1 class="text-3xl mt-10 tracking-tighter mb-3">All Books</h1>
+        <div class="users flex gap-3 flex-wrap">
+            <% if(books.length>0){ %>
+                <% books.forEach(function(book){ %>
+                    <div class="user w-72 p-4 bg-zinc-800 rounded-lg">
+                        <div class="w-full h-52 rounded-lg bg-zinc-700 overflow-hidden" >
+                            <img class="w-full h-full object-cover" src="<%= book.image %>" alt="">
+                        </div>
+                        <h3 class="text-xl mt-3 tracking tighter"><%= book.title %></h3>
+                        <h5 class="text-zinc-500"><%= book.author %></h5>
+                        <!-- <div class="flex gap-3">
+                            <a class="text-zinc-200" href="/edit/<%= book._id %>">Edit User</a>
+                            <a class="text-red-500" class="" href="/delete/<%= book._id %>">Delete User</a>
+                        </div> -->
+                    </div>
+                <% }) %>
+            <% } else { %>
+                    <h3 class="text-zinc-500">No Books Yet!</h3>
+           <% } %>
+            
+        </div>
+    </div>
+</body>
+</html>

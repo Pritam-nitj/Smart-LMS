@@ -1,26 +1,97 @@
-<!-- Add New Books Section -->
-<section id="addBooks" class="mb-5">
-    <div class="card">
-        <div class="card-header">
-            Add New Books
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian - Add Books</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .card {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .card-header {
+            background-color: #343a40;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-bottom: 2px solid #495057;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+        .head{
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Add Books</h1>
+    </header>
+
+    <section id="addBooks">
+        <h5 class="head"><a href="/showBook"> Show All Books</a></h5>
+        <h5 class="head"><a href="/Librarian">Back To Home</a></h5>
+        <div class="card">
+            <div class="card-header">
+                Add New Book
+            </div>
+            <div class="card-body">
+                <form action="/addBook" method="post" id="addBooksForm">
+                    <div class="form-group">
+                        <label for="image">Book Image URL</label>
+                        <input type="text" name="image" class="form-control" placeholder="Enter Book Image URL">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Book Title</label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter Book Title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input type="text" name="author" class="form-control" placeholder="Enter Author's Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ISBN">ISBN</label>
+                        <input type="text" name="ISBN" class="form-control" placeholder="Enter ISBN" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Book</button>
+                </form>
+            </div>
         </div>
-        <div class="card-body">
-            <h5 class="card-title">Add a New Book</h5>
-            <form id="addBooksForm">
-                <div class="form-group">
-                    <label for="bookTitle">Book Title</label>
-                    <input type="text" class="form-control" id="bookTitle" placeholder="Enter Book Title" required>
-                </div>
-                <div class="form-group">
-                    <label for="bookAuthor">Author</label>
-                    <input type="text" class="form-control" id="bookAuthor" placeholder="Enter Author's Name" required>
-                </div>
-                <div class="form-group">
-                    <label for="bookISBN">ISBN</label>
-                    <input type="text" class="form-control" id="bookISBN" placeholder="Enter ISBN" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Book</button>
-            </form>
-        </div>
-    </div>
-</section>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Library Management System Project. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
