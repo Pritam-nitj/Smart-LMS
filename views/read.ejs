@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Members - Library Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-100 p-10">
+    <h1 class="text-3xl text-center mb-10">Registered Members</h1>
+
+    <div class="overflow-x-auto">
+        <table class="table-auto border-collapse w-full">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2">Role</th>
+                    <th class="px-4 py-2">Name</th>
+                    <th class="px-4 py-2">Father's Name</th>
+                    <th class="px-4 py-2">Email</th>
+                    <th class="px-4 py-2">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(member => { %>
+                    <tr class="bg-white border-t">
+                        <td class="px-4 py-2"><%= member.role %></td>
+                        <td class="px-4 py-2"><%= member.username %></td>
+                        <td class="px-4 py-2"><%= member.fathersName %></td>
+                        <td class="px-4 py-2"><%= member.email %></td>
+                        <td class="px-4 py-2">
+                            <a class="text-red-500" class="" href="/deleteUser/<%= member._id %>">Delete User</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

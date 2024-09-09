@@ -66,4 +66,15 @@ app.get('/logout',function(req,res){
 })
 
 
+app.get('/read',async(req,res)=>{
+    let allUsers = await userModel.find();
+    res.render('read',{users: allUsers});
+})
+
+app.get('/deleteUser/:id',async(req,res)=>{
+    let users = await userModel.findOneAndDelete({_id: req.params.id});
+    res.redirect('/read');
+})
+
+
 app.listen(3000);
