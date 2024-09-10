@@ -68,27 +68,20 @@ app.get('/Librarian',function(req,res){
 app.get('/Member',function(req,res){
     res.render("member")
 })
-
 app.get('/Admin',function(req,res){
     res.render("admin")
 })
-
 app.get('/Login',function(req,res){
     res.render("login");
 })
-
-
 app.get('/logout',function(req,res){
     res.cookie("token","");
     res.redirect("/");
 })
-
-
 app.get('/read',async(req,res)=>{
     let allUsers = await userModel.find();
     res.render('read',{users: allUsers});
 })
-
 app.get('/readA',async(req,res)=>{
     let allUsers = await userModel.find();
     res.render('readAdmin',{users: allUsers});
