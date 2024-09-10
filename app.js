@@ -99,6 +99,11 @@ app.get('/deleteUser/:id',async(req,res)=>{
     res.redirect('/read');
 })
 
+app.get('/deleteUserA/:id',async(req,res)=>{
+    let users = await userModel.findOneAndDelete({_id: req.params.id});
+    res.redirect('/readA');
+})
+
 app.get('/add',function(req,res){
     res.render('addBook')
 })
