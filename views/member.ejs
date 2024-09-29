@@ -92,13 +92,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="">View Profile</a>
+                        <a class="nav-link" href="#">View Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Search Books</a>
+                        <a class="nav-link" href="#">Search Books</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Pay Fines</a>
+                        <a class="nav-link" href="#">Pay Fines</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
@@ -124,8 +124,8 @@
                                     <div class="issued-book">
                                         <img src="<%= issuedBook.Ibook.bookDetails.image ? encodeURI(issuedBook.Ibook.bookDetails.image) : 'default-image-url.jpg' %>" alt="Book Cover">
                                         <div class="book-details">
-                                            <h6>Book Name: <%= issuedBook.Ibook.bookDetails.title %> </h6>
-                                            <p>Serial Number: <%= issuedBook.Ibook.LbookId %></p>
+                                            <h6>Title: <%= issuedBook.Ibook.bookDetails.title %> </h6>
+                                            <p>BookId: <%= issuedBook.Ibook.LbookId %></p>
                                             <p>Date of Issue: <%= new Date(issuedBook.IDate).toLocaleDateString() %></p>
                                             <p>Date of Return: <%= new Date(issuedBook.RDate).toLocaleDateString() %></p>
                                         </div>

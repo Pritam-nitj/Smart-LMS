@@ -134,7 +134,7 @@ let {image,title,author,ISBN,copies} = req.body;
             isIssued: false
         })
     }
-    res.redirect('/add')         
+    res.redirect('/showBook')         
 });
 
 app.get('/showBook',async function(req,res){
@@ -186,6 +186,8 @@ app.post('/return',async (req,res)=>{
                         user.IssuedBook.splice(i, 1);
                         user.NoOfBook = user.NoOfBook - 1 ;
                         book.bookDetails.copies = book.bookDetails.copies + 1;
+                        book.isIssued = false;
+                        await book.save();
                         await user.save(); 
                         await book.bookDetails.save();
                         break;
