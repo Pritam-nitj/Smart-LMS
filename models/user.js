@@ -7,7 +7,27 @@ const userSchema = mongoose.Schema({
     username: String,
     fathersName: String,
     email: String,
-    password: String
+    password: String,
+    NoOfBook: {
+        type: Number,
+        default: 0
+    },
+    IssuedBook: [
+        {
+            Ibook: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "book"
+            },
+            IDate: {
+                type: Date
+            },
+            RDate: {
+                type: Date
+            },
+        },
+    ],
+    contact: Number,
+    picture: String
 })
 
 module.exports = mongoose.model("user",userSchema);

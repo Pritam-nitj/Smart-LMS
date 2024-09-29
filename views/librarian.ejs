@@ -74,7 +74,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#generateReport">Generate Report</a>
+                        <a class="nav-link" href="">View Profile</a>
                     </li>
                     <li class="nav-item"></li>
                         <a class="nav-link" href="/add">Add New Books</a>
@@ -91,60 +91,54 @@
     </nav>
 
     <div class="container">
-        <!-- Issue/Return Books Section -->
-        <section id="issueReturn" class="mb-5">
-            <div class="card">
-                <div class="card-header">
-                    Issue/Return Books
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Issue or Return a Book</h5>
-                    <form id="issueReturnForm">
-                        <div class="form-group">
-                            <label for="bookID">Book ID</label>
-                            <input type="text" class="form-control" id="bookID" placeholder="Enter Book ID" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="memberID">Member ID</label>
-                            <input type="text" class="form-control" id="memberID" placeholder="Enter Member ID" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="action">Action</label>
-                            <select class="form-control" id="action" required>
-                                <option value="">Select Action</option>
-                                <option value="issue">Issue</option>
-                                <option value="return">Return</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+        <!-- Two blocks for Issue and Return Books -->
+        <div class="row">
+            <!-- Issue Book Section -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Issue a Book
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Issue a Book</h5>
+                        <form id="issueForm" action="/issue" method="POST">
+                            <div class="form-group">
+                                <label for="issueBookID">Book ID</label>
+                                <input type="text" class="form-control" id="issueBookID" name="bookID" placeholder="Enter Book ID" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="issueMemberID">Member ID</label>
+                                <input type="text" class="form-control" id="issueMemberID" name="Uemail" placeholder="Enter Member ID" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Issue</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Generate Report Section -->
-        <section id="generateReport" class="mb-5">
-            <div class="card">
-                <div class="card-header">
-                    Generate Report
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Generate Library Report</h5>
-                    <form id="reportForm">
-                        <div class="form-group">
-                            <label for="reportType">Report Type</label>
-                            <select class="form-control" id="reportType" required>
-                                <option value="">Select Report Type</option>
-                                <option value="issuedBooks">Issued Books</option>
-                                <option value="returnedBooks">Returned Books</option>
-                                <option value="fines">Fines</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Generate Report</button>
-                    </form>
+            <!-- Return Book Section -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Return a Book
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Return a Book</h5>
+                        <form id="returnForm" action="/return" method="POST">
+                            <div class="form-group">
+                                <label for="returnBookID">Book ID</label>
+                                <input type="text" class="form-control" id="returnBookID" name="bookID" placeholder="Enter Book ID" required>
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="returnMemberID">Member ID</label>
+                                <input type="text" class="form-control" id="returnMemberID" name="memberID" placeholder="Enter Member ID" required>
+                            </div> -->
+                            <button type="submit" class="btn btn-primary">Return</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
 
     <footer>
@@ -152,8 +146,8 @@
     </footer>
 
     <!-- Bootstrap JS and dependencies -->
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

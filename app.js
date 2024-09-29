@@ -36,15 +36,13 @@ app.post('/signup',function(req,res){
             });
             let token = jwt.sign({email},"shhhhhhhuuuuttt");
             res.cookie("token",token);
-            if(role === "member") res.redirect("/Member");
-            if(role === "admin") res.redirect("/Admin")
-            else res.redirect('/Librarian')
+            res.redirect("/login")
         });
     })
 })
 
 app.post("/login",async function(req,res){
-    let user = await userModel.findOne({email: req.body.email})
+    let user = await userModel.findOne({email: req.body.email}).populate("IssuedBook.Ibook")
     if(!user) return res.send("Email Or Password Incorrect!")
 
     if(req.body.role != user.role) return res.send("Email or Password Incorrect!")
@@ -53,11 +51,19 @@ app.post("/login",async function(req,res){
         if(result){
             let token = jwt.sign({email: user.email},"shhhhhhhuuuuttt");
             res.cookie("token",token);
-            if(req.body.role ==="member") res.redirect('/Member');
-            else if(req.body.role === "admin") res.redirect('/Admin')
-            else res.redirect('/Librarian')
+            if(req.body.role === "librarian"){
+                res.render("librarian")
+            } 
+            else if(req.body.role === "admin"){
+                res.render("admin")
+            } 
+            else{
+                res.render("member",{UserInfo: user});
+            } 
         }
-        else  res.send("Access Denied!")
+        else{
+            res.send("Access Denied!")
+        }    
     })
 })
 
@@ -71,6 +77,8 @@ app.get('/Member',function(req,res){
 app.get('/Admin',function(req,res){
     res.render("admin")
 })
+
+
 app.get('/Login',function(req,res){
     res.render("login");
 })
@@ -115,6 +123,54 @@ let {image,title,author,ISBN} = req.body;
 app.get('/showBook',async function(req,res){
     let allbooks = await bookModel.find();
     res.render('showBook',{books: allbooks})
+})
+
+app.post('/issue',async (req,res)=>{
+    let {Uemail,bookID} = req.body;
+    let user = await userModel.findOne({email: Uemail});
+    let book = await bookModel.findOne({ISBN: bookID})
+    if(book){
+        let issueDate = new Date();
+        let returnDate = new Date();
+        returnDate.setDate(returnDate.getDate()+14);
+
+        user.IssuedBook.push({
+            Ibook: book._id,
+            IDate: issueDate,
+            RDate: returnDate
+        });
+
+        user.NoOfBook = user.NoOfBook + 1;
+        await user.save();
+        return res.redirect("/Librarian");
+    }
+    else{
+        return res.send("BookId Not Correct");
+    }   
+})
+
+app.post('/return',async(req,res)=>{
+    let {bookID} = req.body;
+    let book = await bookModel.findOne({ISBN: bookID})
+    if(book){
+        let user = await userModel.findOne({IssuedBook: {$elemMatch:{Ibook: book._id}}});
+        if(user){
+            for (let i = 0; i < user.IssuedBook.length; i++) {
+                if (user.IssuedBook[i].Ibook.equals(book._id)) {
+                    user.IssuedBook.splice(i, 1);
+                    await user.save(); 
+                    break;
+                }
+            }
+            return res.redirect("/Librarian");
+        }
+        else{
+            return res.send("BookId Not Correct");
+        }
+    }
+    else{
+        return res.send("BookId Not Correct");
+    }
 })
 
 app.listen(3000);

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Book Issuing System</title>
+</head>
+<body>
+    <h2>Scan Library ID QR Code</h2>
+    <video id="preview" width="300" height="200"></video>
+
+    <!-- Display Scanned User Info -->
+    <p id="user-info"></p>
+
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script>
+        // JS Code goes here
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+
+// Add a listener for the scan event
+scanner.addListener('scan', function (content) {
+    // This is where the scanned QR code is processed.
+    console.log('Scanned content: ', content);
+    
+    // Display user info based on the QR code (assumed to be user ID)
+    document.getElementById('user-info').innerText = 'Scanned Library ID: ' + content;
+
+    // You can then send this scanned content (e.g., Library User ID) to your backend
+    issueBookToUser(content);
+});
+
+// Start the scanner by accessing the device camera
+Instascan.Camera.getCameras().then(function (cameras) {
+    if (cameras.length > 0) {
+        scanner.start(cameras[0]); // Start scanning using the first available camera
+    } else {
+        console.error('No cameras found.');
+    }
+}).catch(function (e) {
+    console.error(e);
+});
+
+// Example function to issue a book based on the scanned QR content
+function issueBookToUser(libraryId) {
+    // Assuming you have an API endpoint to handle book issuance
+    fetch('/issue-book', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            libraryId: libraryId,
+            bookId: '12345' // Assuming you also have a way to select the book to issue
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Book issued successfully:', data);
+        alert('Book issued successfully to Library ID: ' + libraryId);
+    })
+    .catch((error) => {
+        console.error('Error issuing book:', error);
+    });
+}
+    </script>
+</body>
+</html>
