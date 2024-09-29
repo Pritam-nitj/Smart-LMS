@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema({
         {
             Ibook: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "book"
+                ref: "bookCopy"
             },
             IDate: {
                 type: Date

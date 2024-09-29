@@ -18,8 +18,9 @@
                         <div class="w-full h-52 rounded-lg bg-zinc-700 overflow-hidden" >
                             <img class="w-full h-full object-cover" src="<%= book.image %>" alt="">
                         </div>
-                        <h3 class="text-xl mt-3 tracking tighter"><%= book.title %></h3>
-                        <h5 class="text-zinc-500"><%= book.author %></h5>
+                        <h3 class="text-xl mt-3 tracking tighter">Title: <%= book.title %></h3>
+                        <h5 class="text-zinc-500">Author: <%= book.author %></h5>
+                        <h5 class="text-zinc-500">Copies: <%= book.copies %></h5>
                         <!-- <div class="flex gap-3">
                             <a class="text-zinc-200" href="/edit/<%= book._id %>">Edit User</a>
                             <a class="text-red-500" class="" href="/delete/<%= book._id %>">Delete User</a>

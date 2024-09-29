@@ -122,10 +122,10 @@
                             <% if (issuedBook.Ibook) { %>  <!-- Check if Ibook exists -->
                                 <div id="issuedBooksList">
                                     <div class="issued-book">
-                                        <img src="<%= issuedBook.Ibook.image ? encodeURI(issuedBook.Ibook.image) : 'default-image-url.jpg' %>" alt="Book Cover">
+                                        <img src="<%= issuedBook.Ibook.bookDetails.image ? encodeURI(issuedBook.Ibook.bookDetails.image) : 'default-image-url.jpg' %>" alt="Book Cover">
                                         <div class="book-details">
-                                            <h6>Book Name: <%= issuedBook.Ibook.title %> </h6>
-                                            <p>Serial Number: <%= issuedBook.Ibook.ISBN %></p>
+                                            <h6>Book Name: <%= issuedBook.Ibook.bookDetails.title %> </h6>
+                                            <p>Serial Number: <%= issuedBook.Ibook.LbookId %></p>
                                             <p>Date of Issue: <%= new Date(issuedBook.IDate).toLocaleDateString() %></p>
                                             <p>Date of Return: <%= new Date(issuedBook.RDate).toLocaleDateString() %></p>
                                         </div>
