@@ -6,17 +6,20 @@
     <title>Library Management System - Member Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f2f5;
+            background-color: #f8f9fa;
             margin: 0;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
         header {
-            background-color: #343a40;
+            background-color: #6c757d;
             color: #ffffff;
-            padding: 20px 0;
+            padding: 15px 0;
             text-align: center;
+            font-weight: bold;
         }
         nav {
             margin-bottom: 20px;
@@ -27,6 +30,10 @@
         }
         .navbar-nav .nav-link {
             font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #007bff;
         }
         .container {
             margin-top: 20px;
@@ -34,18 +41,63 @@
         .card {
             border-radius: 8px;
             border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .card-header {
-            background-color: #343a40;
+            background-color: #007bff;
             color: #ffffff;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
-            border-bottom: 2px solid #495057;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .issued-book {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .issued-book img {
+            width: 80px;
+            height: auto;
+            margin-right: 20px;
+            border-radius: 5px;
+        }
+        .book-details {
+            flex-grow: 1;
+        }
+        .book-details h6 {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .book-details p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .fine-amount {
+            margin-top: 10px;
+            color: #dc3545;
+            font-weight: bold;
         }
         .btn-primary {
             background-color: #007bff;
             border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
         }
         .btn-primary:hover {
             background-color: #0056b3;
@@ -55,32 +107,14 @@
             color: #ffffff;
             text-align: center;
             padding: 10px 0;
-            margin-top: 20px;
-        }
-        .form-control {
-            border-radius: 4px;
-        }
-        .issued-book {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-top: 20px;   
-        }
-        .issued-book img {
-            width: 60px; /* Adjust size as needed */
-            height: auto;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
-        .book-details {
-            flex-grow: 1;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Member Dashboard - Library Management System</h1>
+        <h1>Member Dashboard</h1>
     </header>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -113,22 +147,39 @@
         <section id="viewIssuedBooks" class="mb-5">
             <div class="card">
                 <div class="card-header">
-                    View Issued Books 
+                    Issued Books
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Your Issued Books</h5>
-                    <% if(UserInfo.NoOfBook>0){ %>
-                        <% UserInfo.IssuedBook.forEach(function(issuedBook){ %>
+                    <% if(UserInfo.NoOfBook > 0) { %>
+                        <% UserInfo.IssuedBook.forEach(function(issuedBook) { %>
                             <% if (issuedBook.Ibook) { %>  <!-- Check if Ibook exists -->
-                                <div id="issuedBooksList">
-                                    <div class="issued-book">
-                                        <img src="<%= issuedBook.Ibook.bookDetails.image ? encodeURI(issuedBook.Ibook.bookDetails.image) : 'default-image-url.jpg' %>" alt="Book Cover">
-                                        <div class="book-details">
-                                            <h6>Title: <%= issuedBook.Ibook.bookDetails.title %> </h6>
-                                            <p>BookId: <%= issuedBook.Ibook.LbookId %></p>
-                                            <p>Date of Issue: <%= new Date(issuedBook.IDate).toLocaleDateString() %></p>
-                                            <p>Date of Return: <%= new Date(issuedBook.RDate).toLocaleDateString() %></p>
-                                        </div>
+                                <div class="issued-book">
+                                    <img src="<%= issuedBook.Ibook.bookDetails.image ? encodeURI(issuedBook.Ibook.bookDetails.image) : 'default-image-url.jpg' %>" alt="Book Cover">
+                                    <div class="book-details">
+                                        <h6>Title: <%= issuedBook.Ibook.bookDetails.title %></h6>
+                                        <p>Book ID: <%= issuedBook.Ibook.LbookId %></p>
+                                        <p>Date of Issue: <%= new Date(issuedBook.IDate).toLocaleDateString() %></p>
+                                        <p>Date of Return: <%= new Date(issuedBook.RDate).toLocaleDateString() %></p>
+                                        
+                                        <% const returnDate = new Date(issuedBook.RDate); %>
+                                        <% const today = new Date(); %>
+                                        <% let fine = 0; %>
+                                        <% const finePerDay = 2; %> 
+                                        <% let overdueDays; %>
+                                        <% if (today > returnDate) { %>
+                                            <% overdueDays = Math.ceil((today - returnDate) / (1000 * 60 * 60 * 24)); %>
+                                            <% fine = overdueDays * finePerDay; %>
+                                        <% } %>
+
+                                        <p class="fine-amount">
+                                            Fine Amount: 
+                                            <% if (fine > 0) { %>
+                                                ₹<%= fine %> (Overdue by <%= overdueDays %> days)
+                                            <% } else { %>
+                                                No fine due
+                                            <% } %>
+                                        </p>
                                     </div>
                                 </div>
                             <% } else { %>
@@ -136,12 +187,11 @@
                             <% } %>
                         <% }) %>
                     <% } else { %>
-                            <h3 class="text-zinc-500">No Book Issued Yet!</h3>
-                   <% } %>   
+                        <h3 class="text-center text-muted">No Book Issued Yet!</h3>
+                    <% } %>
                 </div>
             </div>
         </section>
-        
     </div>
 
     <footer>

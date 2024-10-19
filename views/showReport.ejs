@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Report - Librarian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-10 flex flex-col items-center">
+    <h1 class="text-4xl font-bold text-center mb-10 text-gray-700">Issued Books Report</h1>
+    
+    <!-- Back to Dashboard Link -->
+    <a href="/Librarian" class="text-blue-500 mb-5 inline-block hover:text-blue-700 transition">← Back to Dashboard</a>
+    
+    <!-- Responsive Table Wrapper -->
+    <div class="overflow-x-auto mt-5 w-full max-w-7xl mx-auto">
+        <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+            <!-- Table Headings -->
+            <thead>
+                <tr class="bg-gray-200 text-gray-700">
+                    <th class="py-3 px-4 text-left">User Email</th>
+                    <th class="py-3 px-4 text-left">Book Id</th>
+                    <th class="py-3 px-4 text-left">Book Title</th>
+                    <th class="py-3 px-4 text-left">Issue Date</th>
+                    <th class="py-3 px-4 text-left">Due Date</th>
+                    <th class="py-3 px-4 text-left">Fine (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Check if there are users with issued books -->
+                <% if (Users.length > 0) { %>
+                    <% Users.forEach(function(user) { %>
+                        <% for(let i = 0; i < user.IssuedBook.length; i++) { %>
+                            <% const returnDate = new Date(user.IssuedBook[i].RDate); %>
+                            <% const issueDate = new Date(user.IssuedBook[i].IDate); %>
+                            <% const today = new Date(); %>
+                            <% let fine = 0; %>
+                            <% const finePerDay = 2; %> 
+                            <% let overdueDays = 0; %>
+                            
+                            <% if (today > returnDate) { %>
+                                <% overdueDays = Math.ceil((today - returnDate) / (1000 * 60 * 60 * 24)); %>
+                                <% fine = overdueDays * finePerDay; %>
+                            <% } %>
+                            <!-- Table Row for Each Issued Book -->
+                            <tr class="hover:bg-gray-100 transition">
+                                <!-- User Email -->
+                                <td class="py-3 px-4 border"><%= user.email %></td>
+                                
+                                <!-- Book Title -->
+                                <td class="py-3 px-4 border"><%= user.IssuedBook[i].Ibook.LbookId %></td>
+                                
+                                <!-- Book ID -->
+                                <td class="py-3 px-4 border"><%= user.IssuedBook[i].Ibook.bookDetails.title %></td>
+                                
+                                <!-- Issue Date -->
+                                <td class="py-3 px-4 border"><%= issueDate.toLocaleDateString() %></td>
+                                
+                                <!-- Due Date -->
+                                <td class="py-3 px-4 border"><%= returnDate.toLocaleDateString() %></td>
+                                
+                                <!-- Fine -->
+                                <td class="py-3 px-4 border text-red-500">₹<%= fine %></td>
+                            </tr>
+                        <% } %> 
+                    <% }) %>
+                <% } else { %>
+                    <!-- No Records Message -->
+                    <tr>
+                        <td colspan="6" class="py-8 text-center text-gray-500">No issued books found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

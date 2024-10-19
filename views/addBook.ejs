@@ -4,96 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Librarian - Add Books</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-        }
-        header {
-            background-color: #343a40;
-            color: #ffffff;
-            padding: 20px 0;
-            text-align: center;
-        }
-        .card {
-            border-radius: 8px;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            max-width: 600px;
-        }
-        .card-header {
-            background-color: #343a40;
-            color: #ffffff;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-bottom: 2px solid #495057;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        footer {
-            background-color: #343a40;
-            color: #ffffff;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: 20px;
-        }
-        .head{
-            margin-left: 20px;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <header>
-        <h1>Add Books</h1>
+    <!-- Header -->
+    <header class="bg-gray-800 text-white py-6 text-center shadow-md">
+        <h1 class="text-4xl font-bold">Add New Book</h1>
     </header>
 
-    <section id="addBooks">
-        <h5 class="head"><a href="/showBook"> Show All Books</a></h5>
-        <h5 class="head"><a href="/Librarian">Back To Home</a></h5>
-        <div class="card">
-            <div class="card-header">
-                Add New Book
-            </div>
-            <div class="card-body">
-                <form action="/addBook" method="post" id="addBooksForm">
-                    <div class="form-group">
-                        <label for="image">Book Image URL</label>
-                        <input type="text" name="image" class="form-control" placeholder="Enter Book Image URL">
+    <!-- Main Content -->
+    <section class="flex-grow mt-8">
+        <!-- Links -->
+        <div class="container mx-auto mb-8 ml-40">
+            <a href="/showBook" class="text-blue-600 hover:text-blue-800 text-lg ">Show All Books</a>
+            <span class="mx-4">|</span>
+            <a href="/Librarian" class="text-blue-600 hover:text-blue-800 text-lg">Back To Home</a>
+        </div>
+
+        <!-- Form Card -->
+        <div class="container mx-auto max-w-lg">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-6">Add a New Book</h2>
+                <form action="/addBook" method="POST" id="addBooksForm" class="space-y-6">
+                    <!-- Book Image URL -->
+                    <div>
+                        <label for="image" class="block text-gray-700 font-medium">Book Image URL</label>
+                        <input type="text" name="image" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter Book Image URL">
                     </div>
-                    <div class="form-group">
-                        <label for="title">Book Title</label>
-                        <input type="text" name="title" class="form-control" placeholder="Enter Book Title" required>
+                    <!-- Book Title -->
+                    <div>
+                        <label for="title" class="block text-gray-700 font-medium">Book Title</label>
+                        <input type="text" name="title" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter Book Title" required>
                     </div>
-                    <div class="form-group">
-                        <label for="author">Author</label>
-                        <input type="text" name="author" class="form-control" placeholder="Enter Author's Name" required>
+                    <!-- Author -->
+                    <div>
+                        <label for="author" class="block text-gray-700 font-medium">Author</label>
+                        <input type="text" name="author" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter Author's Name" required>
                     </div>
-                    <div class="form-group">
-                        <label for="ISBN">ISBN</label>
-                        <input type="text" name="ISBN" class="form-control" placeholder="Enter ISBN" required>
+                    <!-- ISBN -->
+                    <div>
+                        <label for="ISBN" class="block text-gray-700 font-medium">ISBN</label>
+                        <input type="text" name="ISBN" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter ISBN" required>
                     </div>
-                    <div class="form-group"></div>
-                        <label for="ISBN">Copies</label>
-                        <input type="number" name="copies" class="form-control" placeholder="Enter no. of copies" required>
+                    <!-- Number of Copies -->
+                    <div>
+                        <label for="copies" class="block text-gray-700 font-medium">Number of Copies</label>
+                        <input type="number" name="copies" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter number of copies" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Book</button>
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                            Add Book
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </section>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 text-center mt-8">
         <p>&copy; 2024 Library Management System Project. All Rights Reserved.</p>
     </footer>
 
