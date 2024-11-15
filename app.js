@@ -42,7 +42,7 @@ app.post('/signup',function(req,res){
                 email,
                 password: hash
             });
-            let token = jwt.sign({email},"shhhhhhhuuuuttt");
+            let token = jwt.sign({email},"");
             res.cookie("token",token);
             res.redirect("/login")
         });
@@ -71,7 +71,7 @@ app.post("/login", async function (req, res, next) {
 
             if (result) {
                 // Generate JWT token
-                let token = jwt.sign({ email: user.email }, "shhhhhhhuuuuttt");
+                let token = jwt.sign({ email: user.email }, "");
                 res.cookie("token", token);
 
                 // Check user role and set session
