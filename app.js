@@ -532,11 +532,11 @@ app.get("/terms",(req,res)=>{
     res.render('terms');
 })
 
-const MERCHANT_KEY = "96434309-7796-489d-8924-ab56988a6076"  // salt key
-const MERCHANT_ID = "PGTESTPAYUAT86"
+const MERCHANT_KEY = process.env.MERCHANT_KEY  // salt key
+const MERCHANT_ID = process.env.MERCHANT_ID
 
-const MERCHANT_BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay"
-const MERCHANT_STATUS_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status"
+const MERCHANT_BASE_URL = process.env.MERCHANT_BASE_URL
+const MERCHANT_STATUS_URL = process.env.MERCHANT_STATUS_URL
 
 const redirectUrl = "http://localhost:3000/status"
 
