@@ -15,7 +15,9 @@ const bookSchema = mongoose.Schema({
         required: true,
         unique: true
     },
-    copies: Number
+    copies: Number ,
+    rackno: String,
+    desc : String
 })
 
 module.exports = mongoose.model('book',bookSchema);

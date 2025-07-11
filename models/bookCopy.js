@@ -14,7 +14,15 @@ const bookcopySchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'book',
         required: true
-    }
+    },
+    issueDate: {
+        type: Date,
+        default: null
+    },
+    returnDate: {
+        type: Date,
+        default: null
+    },
 })
 
 module.exports = mongoose.model('bookCopy',bookcopySchema)

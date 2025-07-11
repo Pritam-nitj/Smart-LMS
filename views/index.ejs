@@ -4,30 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management System - Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
     <!-- Navbar -->
-    <nav class="bg-blue-600 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-white text-2xl font-bold">LibraryMS</a>
-            <div>
-                <a href="/login" class="text-white px-4 py-2 rounded hover:bg-blue-500">Login</a>
-                <a href="/signup" class="text-white px-4 py-2 rounded hover:bg-blue-500">Sign Up</a>
+    <nav class="bg-blue-950 sticky top-0 z-50 backdrop-blur-lg bg-opacity-95">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-book-reader text-blue-400 text-3xl transform hover:scale-110 transition-transform duration-300"></i>
+                    <a href="#" class="text-white text-2xl font-bold tracking-tight hover:text-blue-300 transition-colors duration-300">LibraryMS</a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="/about" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium">About Us</a>
+                    <a href="#features" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium">Features</a>
+                    <a href="/terms" class="text-gray-300 hover:text-white transition-colors duration-300 font-medium">Terms & Conditions</a>
+                </div>
+                <div class="space-x-4">
+                    <a href="/login" class="text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 border-2 border-blue-400 transition-all duration-300 hover:border-blue-300">Login</a>
+                    <a href="/signup" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-blue-500/50">Sign Up</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="flex items-center justify-center h-screen">
-        <div class="text-center">
-            <h1 class="text-4xl font-bold text-gray-800 mb-6">Welcome to the Library Management System</h1>
-            <p class="text-lg text-gray-600 mb-10">Your gateway to a world of knowledge. Discover, read, and manage your favorite books seamlessly.</p>
-            
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxk8ksnshTbGXtSEjne3JTeWbGkt6rKU_HkqY2SZCg4bES0dpb4ZdTw4suLw&s" alt="Library Illustration" class="mx-auto">
-            
-            <blockquote class="mt-10 text-xl italic text-gray-700">"A room without books is like a body without a soul."</blockquote>
-            <cite class="block text-gray-500 mt-2">- Marcus Tullius Cicero</cite>
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden bg-gradient-to-b from-blue-900 via-blue-700 to-blue-500">
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"30\" height=\"30\" viewBox=\"0 0 30 30\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z\" fill=\"rgba(255,255,255,0.07)\"%3E%3C/path%3E%3C/svg%3E')] opacity-20"></div>
+        </div>
+        <div class="relative">
+            <div class="container mx-auto px-6 py-10 md:py-20">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-8 text-white leading-tight">
+                        Your Digital Gateway to 
+                        <span class="bg-gradient-to-r from-blue-200 to-blue-100 text-transparent bg-clip-text">Knowledge</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-blue-100 mb-12 leading-relaxed">Discover a world of books, manage your reading journey, and explore endless possibilities with our modern library system.</p>
+                    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                        <a href="/signup" class="transform hover:scale-105 transition-all duration-300 bg-white text-blue-900 px-8 py-4 rounded-xl font-semibold hover:shadow-2xl hover:shadow-blue-500/20">
+                            Get Started
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="/about" class="transform hover:scale-105 transition-all duration-300 border-2 border-white/30 text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 backdrop-blur-sm">
+                            Learn More
+                            <i class="fas fa-book ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Features Section -->
+    <div id="features" class="py-8 bg-white/80 backdrop-blur-sm">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Smart Search Feature -->
+                <div class="group p-8 bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="bg-blue-100 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-300">
+                        <i class="fas fa-search text-blue-600 text-2xl group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-blue-900">Smart Search</h3>
+                    <p class="text-gray-600 leading-relaxed">Advanced search system with filters and recommendations to find your next read instantly.</p>
+                </div>
+
+                <!-- 24/7 Access Feature -->
+                <div class="group p-8 bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="bg-blue-100 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-300">
+                        <i class="fas fa-clock text-blue-600 text-2xl group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-blue-900">24/7 Access</h3>
+                    <p class="text-gray-600 leading-relaxed">Manage your library account anytime, anywhere with our cloud-based system.</p>
+                </div>
+
+                <!-- Book Tracking Feature -->
+                <div class="group p-8 bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                    <div class="bg-blue-100 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-300">
+                        <i class="fas fa-book text-blue-600 text-2xl group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4 text-blue-900">Smart Tracking</h3>
+                    <p class="text-gray-600 leading-relaxed">Automated tracking system for books, dues, and fines with timely notifications.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quote Section -->
+    <div class="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-8">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"30\" height=\"30\" viewBox=\"0 0 30 30\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z\" fill=\"rgba(255,255,255,0.07)\"%3E%3C/path%3E%3C/svg%3E')] opacity-20"></div>
+        <div class="container mx-auto px-6 text-center relative">
+            <i class="fas fa-quote-left text-5xl text-blue-400 mb-6"></i>
+            <blockquote class="text-3xl md:text-4xl italic font-light mb-8 leading-relaxed">"A room without books is like a body without a soul."</blockquote>
+            <div class="flex items-center justify-center space-x-4">
+                <div class="w-12 h-0.5 bg-blue-400"></div>
+                <cite class="text-xl text-blue-200">Marcus Tullius Cicero</cite>
+                <div class="w-12 h-0.5 bg-blue-400"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-950 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <p class="text-blue-200">&copy; 2024 Library Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Member Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+
+        .glass-morph {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .book-card .book-overlay {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .book-card:hover .book-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #93c5fd transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #93c5fd;
+            border-radius: 3px;
+        }
+
+        .floating-stats {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .shine-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shine-effect::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 45%,
+                rgba(255, 255, 255, 0.1) 47%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.1) 53%,
+                transparent 55%
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 100%);
+            transform: scale(0);
+            transition: transform 0.5s;
+        }
+
+        .ripple:active::after {
+            transform: scale(2);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="custom-scrollbar">
+    <!-- Notification System -->
+    <div id="notification-container" class="fixed top-4 right-4 z-50 space-y-2">
+        <!-- Notifications will be dynamically inserted here -->
+    </div>
+
+    <!-- Header with Advanced Gradient -->
+    <header class="relative bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"%23fff\" fill-opacity=\"0.05\" fill-rule=\"evenodd\"%3E%3Ccircle cx=\"20\" cy=\"20\" r=\"3\"/%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        <div class="container mx-auto px-4 relative">
+            <div class="flex justify-between items-center py-8">
+                <div class="space-y-2">
+                    <h1 class="text-4xl font-bold tracking-tight">
+                        Welcome back, <%= UserInfo.username %>! 👋
+                    </h1>
+                    <p class="text-blue-100 text-lg">Your gateway to endless discoveries</p>
+                    
+                    <!-- Quick Stats -->
+                    <div class="mt-6 grid grid-cols-3 gap-4 max-w-2xl">
+                        <div class="floating-stats bg-white/10 backdrop-blur-md rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold">5</div>
+                            <div class="text-sm text-blue-100">Books Borrowed</div>
+                        </div>
+                        <div class="floating-stats bg-white/10 backdrop-blur-md rounded-lg p-4 text-center" style="animation-delay: 0.2s">
+                            <div class="text-2xl font-bold">3</div>
+                            <div class="text-sm text-blue-100">Due Soon</div>
+                        </div>
+                        <div class="floating-stats bg-white/10 backdrop-blur-md rounded-lg p-4 text-center" style="animation-delay: 0.4s">
+                            <div class="text-2xl font-bold">12</div>
+                            <div class="text-sm text-blue-100">Reading List</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Section -->
+                <div class="flex items-center space-x-6">
+                    <div class="text-right">
+                        <div class="text-sm text-blue-100">Member since</div>
+                        <div class="font-medium">January 2024</div>
+                    </div>
+                    <div class="relative group">
+                        <a href="/profile" class="block">
+                            <% if (UserInfo.profilepic) { %>
+                                <img class="w-16 h-16 rounded-full border-4 border-white/30 group-hover:border-white/70 transition-all duration-300 shadow-lg" 
+                                     src="/images/uploads/<%= UserInfo.profilepic %>" 
+                                     alt="Profile Picture">
+                            <% } else { %>
+                                <img class="w-16 h-16 rounded-full border-4 border-white/30 group-hover:border-white/70 transition-all duration-300 shadow-lg" 
+                                     src="https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg" 
+                                     alt="Profile Picture">
+                            <% } %>
+                            <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-4 border-white"></div>
+                        </a>
+                        <!-- Profile Dropdown -->
+                        <div class="absolute right-0 mt-2 w-48 py-2 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <a href="/profile" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">
+                                <i class="fas fa-user-circle mr-2"></i> Profile
+                            </a>
+                            <a href="/settings" class="block px-4 py-2 text-gray-800 hover:bg-blue-50">
+                                <i class="fas fa-cog mr-2"></i> Settings
+                            </a>
+                            <hr class="my-2">
+                            <a href="/logout" class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Advanced Search Section -->
+    <nav class="sticky top-0 z-40 bg-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 py-4">
+                <form action="/searchBook" method="POST" class="flex-1 flex max-w-3xl">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input name="key" 
+                               type="text" 
+                               required 
+                               placeholder="Search by title, author, ISBN, or keywords..." 
+                               class="w-full pl-12 pr-4 py-3 rounded-l-xl border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all">
+                    </div>
+                    <button type="submit" 
+                            class="px-8 py-3 bg-blue-600 text-white rounded-r-xl hover:bg-blue-700 transition-colors ripple shine-effect flex items-center gap-2 font-medium">
+                        <i class="fas fa-search"></i>
+                        <span>Search</span>
+                    </button>
+                </form>
+                
+                <!-- Advanced Filters -->
+                <div class="flex items-center gap-4">
+                    <div class="relative group">
+                        <button class="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2">
+                            <i class="fas fa-filter"></i>
+                            <span>Filter</span>
+                            <i class="fas fa-chevron-down text-sm"></i>
+                        </button>
+                        <!-- Filter Dropdown -->
+                        <div class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <div class="p-4">
+                                <h3 class="font-medium text-gray-900 mb-3">Filter by Genre</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox text-blue-600">
+                                        <span class="ml-2 text-gray-700">Fiction</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox text-blue-600">
+                                        <span class="ml-2 text-gray-700">Non-Fiction</span>
+                                    </label>
+                                    <!-- Add more genres -->
+                                </div>
+                                <hr class="my-3">
+                                <h3 class="font-medium text-gray-900 mb-3">Availability</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox text-blue-600">
+                                        <span class="ml-2 text-gray-700">Available Now</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="form-checkbox text-blue-600">
+                                        <span class="ml-2 text-gray-700">Coming Soon</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <button class="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-2">
+                            <i class="fas fa-sort"></i>
+                            <span>Sort</span>
+                            <i class="fas fa-chevron-down text-sm"></i>
+                        </button>
+                        <!-- Sort Dropdown -->
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Recently Added</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Title A-Z</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Author A-Z</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Most Popular</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Genre Quick Filter -->
+        <div class="mb-8 flex gap-3 overflow-x-auto pb-4 custom-scrollbar">
+            <button class="px-6 py-2 rounded-full bg-blue-600 text-white">All Books</button>
+            <button class="px-6 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">Fiction</button>
+            <button class="px-6 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">Non-Fiction</button>
+            <button class="px-6 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">Science</button>
+            <button class="px-6 py-2 rounded-[Previous code remains the same until the genre quick filter buttons...]
+
+            <button class="px-6 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">Technology</button>
+            <button class="px-6 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">History</button>
+            <button class="px-6 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">Biography</button>
+            <button class="px-6 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">Self-Help</button>
+        </div>
+
+        <!-- Book Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+            <% if (books.length > 0) { %>
+                <% books.forEach(function(book, index) { %>
+                    <div class="book-card glass-morph rounded-2xl overflow-hidden" 
+                         style="animation-delay: <%= index * 0.1 %>s">
+                        <!-- Book Image Container -->
+                        <div class="relative aspect-w-3 aspect-h-4 bg-gray-100">
+                            <img class="w-full h-full object-cover" 
+                                 src="<%= book.image %>" 
+                                 alt="<%= book.title %>"
+                                 loading="lazy">
+                            <!-- Overlay with Quick Actions -->
+                            <div class="book-overlay absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent p-4 flex flex-col justify-end">
+                                <div class="flex justify-between items-end">
+                                    <div class="text-white">
+                                        <p class="text-sm font-medium opacity-90">Availability</p>
+                                        <p class="text-lg font-bold"><%= book.copies %> Copies</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white transition-colors"
+                                                title="Add to Reading List">
+                                            <i class="fas fa-bookmark"></i>
+                                        </button>
+                                        <button class="p-2 bg-white/20 hover:bg-white/30 rounded-full text-white transition-colors"
+                                                title="Share">
+                                            <i class="fas fa-share-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Book Details -->
+                        <div class="p-6">
+                            <div class="flex items-start justify-between gap-4 mb-4">
+                                <h3 class="font-semibold text-lg text-gray-800 line-clamp-2 flex-1">
+                                    <%= book.title %>
+                                </h3>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium <%= book.copies > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                                    <%= book.copies > 0 ? 'Available' : 'Borrowed' %>
+                                </span>
+                            </div>
+                            <div class="space-y-3 text-sm text-gray-600">
+                                <p class="flex items-center">
+                                    <i class="fas fa-user-edit w-5"></i>
+                                    <span class="ml-2 line-clamp-1"><%= book.author %></span>
+                                </p>
+                                <p class="flex items-center">
+                                    <i class="fas fa-barcode w-5"></i>
+                                    <span class="ml-2"><%= book.ISBN %></span>
+                                </p>
+                                <p class="flex items-center">
+                                    <i class="fas fa-map-marker-alt w-5"></i>
+                                    <span class="ml-2">Rack <%= book.rackno %></span>
+                                </p>
+                            </div>
+                            <!-- Action Buttons -->
+                            <div class="mt-6 space-y-3">
+                                <button class="w-full py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ripple shine-effect flex items-center justify-center gap-2">
+                                    <i class="fas fa-book-reader"></i>
+                                    <span>Borrow Now</span>
+                                </button>
+                                <button class="w-full py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>View Details</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <!-- Empty State -->
+                <div class="col-span-full flex flex-col items-center justify-center py-16 text-gray-500">
+                    <div class="w-24 h-24 mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-books text-4xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-medium text-gray-900 mb-2">No Books Available</h3>
+                    <p class="text-gray-500 text-center max-w-md">
+                        We're currently updating our collection. Check back soon for new additions to our library.
+                    </p>
+                    <button class="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Notify When Available
+                    </button>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-12 flex justify-center">
+            <nav class="flex items-center gap-2">
+                <button class="p-2 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="px-4 py-2 rounded-lg bg-blue-600 text-white">1</button>
+                <button class="px-4 py-2 rounded-lg hover:bg-gray-100">2</button>
+                <button class="px-4 py-2 rounded-lg hover:bg-gray-100">3</button>
+                <button class="p-2 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </nav>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 mt-16">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 gradient-text">About Us</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Your gateway to knowledge and inspiration. We provide a vast collection of books and resources to support your learning journey.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 gradient-text">Library Hours</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex justify-between">
+                            <span>Monday - Friday</span>
+                            <span>9:00 AM - 8:00 PM</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Saturday</span>
+                            <span>10:00 AM - 6:00 PM</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Sunday</span>
+                            <span>Closed</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 gradient-text">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">My Account</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Reading History</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Book Recommendations</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 gradient-text">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Stay updated with our latest additions and events.</p>
+                    <form class="flex">
+                        <input type="email" 
+                               placeholder="Enter your email" 
+                               class="flex-1 px-4 py-2 rounded-l-lg bg-gray-800 border-gray-700 text-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                        <button type="submit" 
+                                class="px-6 py-2 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 transition-colors">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2024 Library Management System. All Rights Reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Template -->
+    <template id="notification-template">
+        <div class="notification glass-morph rounded-lg p-4 min-w-[300px] transform translate-x-full transition-transform duration-300">
+            <div class="flex items-start gap-3">
+                <div class="notification-icon flex-shrink-0 w-6 h-6"></div>
+                <div class="flex-1">
+                    <h4 class="font-medium text-gray-900 notification-title"></h4>
+                    <p class="text-sm text-gray-600 notification-message"></p>
+                </div>
+                <button class="text-gray-400 hover:text-gray-600" onclick="this.closest('.notification').remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Simple Notification System Script -->
+    <script>
+        function showNotification(type, title, message) {
+            const template = document.getElementById('notification-template');
+            const notification = template.content.cloneNode(true);
+            const container = document.getElementById('notification-container');
+            
+            const notificationElement = notification.querySelector('.notification');
+            const iconElement = notification.querySelector('.notification-icon');
+            const titleElement = notification.querySelector('.notification-title');
+            const messageElement = notification.querySelector('.notification-message');
+            
+            // Set icon based on type
+            const icons = {
+                success: '<i class="fas fa-check-circle text-green-500"></i>',
+                error: '<i class="fas fa-exclamation-circle text-red-500"></i>',
+                warning: '<i class="fas fa-exclamation-triangle text-yellow-500"></i>',
+                info: '<i class="fas fa-info-circle text-blue-500"></i>'
+            };
+            
+            iconElement.innerHTML = icons[type] || icons.info;
+            titleElement.textContent = title;
+            messageElement.textContent = message;
+            
+            container.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notificationElement.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notificationElement.classList.add('translate-x-full');
+                setTimeout(() => {
+                    notificationElement.remove();
+                }, 300);
+            }, 5000);
+        }
+        
+        // Example usage:
+        // showNotification('success', 'Success!', 'Book has been reserved successfully.');
+        // showNotification('error', 'Error!', 'Unable to process your request.');
+        // showNotification('warning', 'Warning!', 'You have reached your borrowing limit.');
+        // showNotification('info', 'Info', 'New books have been added to the library.');
+    </script>
+</body>
+</html>

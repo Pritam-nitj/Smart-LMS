@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page - Library Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 font-['Inter'] leading-normal tracking-normal">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gray-800">Library Portal</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/Member" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                        <i class="fas fa-home mr-2"></i>Back to Home
+                    </a>
+                    <!-- <a href="/Member" class="text-gray-600 hover:text-gray-900 transition">Home</a> -->
+                    <button onclick="window.location.href='/logout'" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        <span>Logout</span>
+                    </button>
+                    <!-- <a href="/logout" class="px-4 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition">Logout</a> -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Profile Card -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <!-- Profile Header -->
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-8 py-12">
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <% if(UserInfo.profilepic){ %>
+                            <img class="w-32 h-32 rounded-full border-4 border-white shadow-lg" src="/images/uploads/<%= UserInfo.profilepic%>" alt="Profile Picture">
+                        <%} else{ %>
+                            <img class="w-32 h-32 rounded-full border-4 border-white shadow-lg" src="https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg" alt="Profile Picture">
+                        <% } %>
+                        <a href="/editProfile" class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="text-white">
+                        <h2 class="text-3xl font-bold"><%= UserInfo.username %></h2>
+                        <p class="text-blue-100"><%= UserInfo.email %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Account Details -->
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Account Details</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Join Date</span>
+                                <span class="font-medium"><%= (UserInfo.JoinDate).toLocaleDateString() %></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Books Issued</span>
+                                <span class="font-medium"><%= UserInfo.NoOfBook %></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Degree</span>
+                                <span class="font-medium"><%= UserInfo.Degree %></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Branch</span>
+                                <span class="font-medium"><%= UserInfo.Branch %></span>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t">
+                                <span class="text-gray-600">Fine Due</span>
+                                <% if (UserInfo.Fine > 0) { %>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-red-600 font-semibold">₹<%= UserInfo.Fine %></span>
+                                        <button onclick="handlePayment()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                                            Pay Now
+                                        </button>
+                                    </div>
+                                <% } else { %>
+                                    <span class="text-green-600 font-medium">No fine due</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QR Code -->
+                    <div class="bg-gray-50 rounded-xl p-6 flex items-center justify-center">
+                        <% if (QR) { %>
+                            <div class="text-center">
+                                <img class="h-48 w-48 mx-auto" src="<%= QR %>" alt="QR Code for Profile">
+                            </div>
+                        <% } else { %>
+                            <p class="text-gray-500">No QR code available</p>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Borrowed Books -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Borrowed Books</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <% if(UserInfo.NoOfBook > 0) { %>
+                            <% UserInfo.IssuedBook.forEach(function(issuedBook) { %>
+                                <% if (issuedBook.Ibook) { %>
+                                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                                        <img class="w-full h-96 object-cover" src="<%= issuedBook.Ibook.bookDetails.image ? encodeURI(issuedBook.Ibook.bookDetails.image) : 'image.png' %>" alt="Book Cover">
+                                        <div class="p-4">
+                                            <h4 class="font-semibold text-gray-800 mb-2"><%= issuedBook.Ibook.bookDetails.title %></h4>
+                                            <div class="space-y-2 text-sm">
+                                                <p class="text-gray-600">Book ID: <%= issuedBook.Ibook.LbookId %></p>
+                                                <p class="text-gray-600">Issued Date: <%= new Date(issuedBook.IDate).toLocaleDateString() %></p>
+                                                <p class="text-gray-600">Return Date: <%= new Date(issuedBook.RDate).toLocaleDateString() %></p>
+
+                                                <% const returnDate = new Date(issuedBook.RDate); %>
+                                                <% const today = new Date(); %>
+                                                <% let fine = 0; %>
+                                                <% const finePerDay = 2; %>
+                                                <% let overdueDays; %>
+                                                <% if (today > returnDate) { %>
+                                                    <% overdueDays = Math.ceil((today - returnDate) / (1000 * 60 * 60 * 24)); %>
+                                                    <% fine = overdueDays * finePerDay; %>
+                                                <% } %>
+
+                                                <% if (fine > 0) { %>
+                                                    <div class="mt-3 p-2 bg-red-50 rounded-lg">
+                                                        <p class="text-red-600 font-medium">
+                                                            Fine: ₹<%= fine %><br>
+                                                            <span class="text-sm font-normal">Overdue by <%= overdueDays %> days</span>
+                                                        </p>
+                                                    </div>
+                                                <% }else{ %>
+                                                    <div class="mt-3 p-3 bg-green-100 rounded-lg">
+                                                        <p class="text-zinc-600 font-medium mb-3">
+                                                            No fine Due
+                                                        </p>
+                                                    </div>
+                                                    <%}%>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% }) %>
+                        <% } else { %>
+                            <div class="col-span-3 text-center py-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                <h3 class="text-gray-500 text-lg">No Books Issued Yet!</h3>
+                                <p class="text-gray-400 mt-2">Visit the library to borrow books</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2024 Library Management System</p>
+                <div class="mt-4 md:mt-0">
+                    <a href="#" class="text-gray-300 hover:text-white mx-2">Privacy Policy</a>
+                    <a href="#" class="text-gray-300 hover:text-white mx-2">Terms of Service</a>
+                    <a href="#" class="text-gray-300 hover:text-white mx-2">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const handlePayment = async () => {
+            try {
+                const response = await axios.post('http://localhost:3000/create-order');
+                window.location.href = response.data.url;
+            } catch (error) {
+                console.error("Error in payment:", error);
+            }
+        }
+    </script>
+</body>
+
+</html>

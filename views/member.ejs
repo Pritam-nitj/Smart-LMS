@@ -1,206 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management System - Member Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
         }
-        header {
-            background-color: #6c757d;
-            color: #ffffff;
-            padding: 15px 0;
-            text-align: center;
-            font-weight: bold;
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            /* backdrop-filter: blur(10px); */
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
-        nav {
-            margin-bottom: 20px;
-        }
-        nav .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .navbar-nav .nav-link {
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #007bff;
-        }
-        .container {
-            margin-top: 20px;
-        }
-        .card {
-            border-radius: 8px;
-            border: none;
-            background: #ffffff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        /* .book-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card:hover {
+            position: relative;
+            overflow: hidden;
+        } */
+
+        /* .book-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        } */
+
+        .search-input {
+            transition: all 0.3s ease;
         }
-        .card-header {
-            background-color: #007bff;
+
+        .search-input:focus {
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+        }
+
+        .footer-link:hover {
             color: #ffffff;
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-        .card-body {
-            padding: 20px;
-        }
-        .issued-book {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 20px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-        .issued-book img {
-            width: 80px;
-            height: auto;
-            margin-right: 20px;
-            border-radius: 5px;
-        }
-        .book-details {
-            flex-grow: 1;
-        }
-        .book-details h6 {
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        .book-details p {
-            margin: 5px 0;
-            color: #666;
-        }
-        .fine-amount {
-            margin-top: 10px;
-            color: #dc3545;
-            font-weight: bold;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        footer {
-            background-color: #343a40;
-            color: #ffffff;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: 40px;
+            text-decoration: underline;
         }
     </style>
 </head>
-<body>
 
-    <header>
-        <h1>Member Dashboard</h1>
+<body>
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white py-6">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold">Welcome, <%= UserInfo.username %>!</h1>
+                <p class="text-blue-200 mt-1">Discover your next great read</p>
+            </div>
+            <a href="/profile" class="relative">
+                <img class="w-12 h-12 rounded-full border-2 border-blue-300 shadow-lg" 
+                     src="<%= UserInfo.profilepic ? `/images/uploads/${UserInfo.profilepic}` : 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg' %>" 
+                     alt="Profile Picture">
+                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+            </a>
+        </div>
     </header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Welcome <%= UserInfo.username %></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    <!-- Search Section -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 py-4">
+        <div class="container mx-auto px-6 flex items-center justify-between">
+            <div class="flex w-full max-w-lg">
+                <div class="relative flex-1">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="Search by title, author, or ISBN..." 
+                        class="search-input w-full pl-10 pr-4 py-3 rounded-l-lg border-gray-300 focus:border-blue-500"
+                        oninput="filterBooks()"
+                    >
+                </div>
+            </div>            
+            <button onclick="window.location.href='/logout'" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200">
+                <i class="fas fa-sign-out-alt mr-2"></i>
+                <span>Logout</span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">View Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Search Books</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pay Fines</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </li>
-                </ul>
-            </div>
+            <!-- <div class="ml-4 flex items-center gap-4">
+                <button class="text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <button class="text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-sort"></i> Sort
+                </button>
+            </div> -->
         </div>
     </nav>
 
-    <div class="container">
-        <!-- View Issued Books Section -->
-        <section id="viewIssuedBooks" class="mb-5">
-            <div class="card">
-                <div class="card-header">
-                    Issued Books
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Your Issued Books</h5>
-                    <% if(UserInfo.NoOfBook > 0) { %>
-                        <% UserInfo.IssuedBook.forEach(function(issuedBook) { %>
-                            <% if (issuedBook.Ibook) { %>  <!-- Check if Ibook exists -->
-                                <div class="issued-book">
-                                    <img src="<%= issuedBook.Ibook.bookDetails.image ? encodeURI(issuedBook.Ibook.bookDetails.image) : 'default-image-url.jpg' %>" alt="Book Cover">
-                                    <div class="book-details">
-                                        <h6>Title: <%= issuedBook.Ibook.bookDetails.title %></h6>
-                                        <p>Book ID: <%= issuedBook.Ibook.LbookId %></p>
-                                        <p>Date of Issue: <%= new Date(issuedBook.IDate).toLocaleDateString() %></p>
-                                        <p>Date of Return: <%= new Date(issuedBook.RDate).toLocaleDateString() %></p>
-                                        
-                                        <% const returnDate = new Date(issuedBook.RDate); %>
-                                        <% const today = new Date(); %>
-                                        <% let fine = 0; %>
-                                        <% const finePerDay = 2; %> 
-                                        <% let overdueDays; %>
-                                        <% if (today > returnDate) { %>
-                                            <% overdueDays = Math.ceil((today - returnDate) / (1000 * 60 * 60 * 24)); %>
-                                            <% fine = overdueDays * finePerDay; %>
-                                        <% } %>
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <% if (books.length > 0) { %>
+                <% books.forEach(function(book, index) { %>
+                    <div class="book-card glass-card rounded-lg p-4">
+                        <div class="aspect-w-3 aspect-h-4 bg-gray-100">
+                            <img src="<%= book.image %>" loading="lazy" alt="<%= book.title %>" class="w-full h-full object-cover rounded-md">
+                        </div>
+                        <h3 class="mt-4 text-lg font-semibold text-gray-800 line-clamp-2"><%= book.title %></h3>
+                        <p class="text-gray-500 mt-2">Author: <%= book.author %></p>
+                        <p class="text-gray-500">ISBN: <%= book.ISBN %></p>
+                        <p class="text-gray-500">Available: <%= book.copies %> copies</p>
+                        <p class="text-gray-500">Rack No: <%= book.rackno %></p>
 
-                                        <p class="fine-amount">
-                                            Fine Amount: 
-                                            <% if (fine > 0) { %>
-                                                ₹<%= fine %> (Overdue by <%= overdueDays %> days)
-                                            <% } else { %>
-                                                No fine due
-                                            <% } %>
-                                        </p>
-                                    </div>
-                                </div>
-                            <% } else { %>
-                                <p>Book details not available.</p>
-                            <% } %>
-                        <% }) %>
-                    <% } else { %>
-                        <h3 class="text-center text-muted">No Book Issued Yet!</h3>
-                    <% } %>
+                        <!-- <button class="w-full bg-blue-600 text-white py-2 mt-4 rounded-lg hover:bg-blue-700">
+                            Reserve Book
+                        </button> -->
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="col-span-full text-center text-gray-500 py-12">
+                    <i class="fas fa-book-open text-4xl"></i>
+                    <p class="mt-4 text-lg">No Books Available</p>
                 </div>
+            <% } %>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-4">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="ml-20">
+                <h4 class="text-lg font-bold mb-3">Library Hours</h4>
+                <p>Mon-Fri: 9 AM - 8 PM</p>
+                <p>Sat: 10 AM - 6 PM</p>
+                <p>Sun: Closed</p>
             </div>
-        </section>
-    </div>
-
-    <footer>
-        <p>&copy; 2024 Library Management System. All Rights Reserved.</p>
+            <div>
+                <h4 class="text-lg font-bold mb-2">Contact Us</h4>
+                <p>Email: library@example.com</p>
+                <p>Phone: +91 9876540000</p>
+            </div>
+        </div>
+        <div class="mt-6 border-t border-gray-700 text-center pt-2">
+            <p>&copy; 2024 Library Management System</p>
+        </div>
     </footer>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
+<script>
+    function filterBooks() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const bookCards = document.getElementsByClassName('book-card');
+
+        Array.from(bookCards).forEach(card => {
+            const title = card.querySelector('h3').textContent.toLowerCase();
+            const author = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+            const isbn = card.querySelector('p:nth-child(3)').textContent.toLowerCase();
+
+            if (title.includes(searchInput) || author.includes(searchInput) || isbn.includes(searchInput)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    // Search functionality
+    function filterBooks() {
+        const searchInput = document.getElementById('searchInput');
+        const filter = searchInput.value.toLowerCase();
+        const bookCards = document.getElementsByClassName('book-card');
+
+        Array.from(bookCards).forEach(card => {
+            // Extracting the text content of title, author, and ISBN
+            const title = card.querySelector('h3').textContent.toLowerCase();
+            const author = card.querySelector('p:nth-of-type(1)').textContent.toLowerCase();
+            const isbn = card.querySelector('p:nth-of-type(2)').textContent.toLowerCase();
+
+            // Display the card if any of the text matches the filter, otherwise hide it
+            if (title.includes(filter) || author.includes(filter) || isbn.includes(filter)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Attach the filterBooks function to the search input
+    document.getElementById('searchInput').addEventListener('input', filterBooks);
+
+
+</script>
+
+
 </html>

@@ -4,48 +4,321 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Library Management System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f6f9fc 0%, #eef2f5 100%);
+        }
+        
+        .signup-container {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
+        .floating-shape {
+            position: fixed;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper::after {
+            content: '\f107';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #6b7280;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex justify-center items-center h-screen">
 
-    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h2 class="text-2xl font-semibold text-center mb-6">Sign Up</h2>
-        <form action="/signup" method="POST">
-            <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
-                <input type="text" name="username" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
+<body class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative">
+    <!-- Decorative background shapes -->
+    <div class="floating-shape w-64 h-64 top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="floating-shape w-96 h-96 bottom-0 right-0 translate-x-1/2 translate-y-1/2"></div>
+    
 
-            <div class="mb-4">
-                <label for="fatherName" class="block text-sm font-medium text-gray-700">Father's Name:</label>
-                <input type="text" name="fathersName" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+    <div class="signup-container w-full max-w-xl">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <div class="mx-auto w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-user-plus text-3xl text-white"></i>
             </div>
+            <h2 class="text-3xl font-bold text-gray-900">Create Account</h2>
+            <p class="mt-2 text-gray-600">Join our library community today</p>
+        </div>
 
-            <div class="mb-4">
-                <label for="role" class="block text-sm font-medium text-gray-700">Sign Up as:</label>
-                <select name="role" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="admin">Admin</option>
-                    <option value="librarian">Librarian</option>
-                    <option value="member">Member</option>
-                </select>
-            </div>
-            
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
-                <input type="email" name="email" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
+        <!-- Main Form Card -->
+        <div class="bg-white shadow-2xl rounded-2xl p-8">
+            <form action="/signup" method="POST" id="signupForm" class="space-y-6">
+                <!-- Username Field -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <div class="mt-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="username" 
+                            required 
+                            class="form-input block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            placeholder="Enter your username"
+                        >
+                    </div>
+                </div>
 
-            <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
-                <input type="password" name="password" required class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <div class="mt-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            required 
+                            class="form-input block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            placeholder="you@example.com"
+                        >
+                    </div>
+                </div>
 
-            <div class="mb-4">
-                <button type="submit" class="w-full bg-indigo-500 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-600">Sign Up</button>
+                <!-- Password Fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <div class="mt-1 relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <input 
+                                type="password" 
+                                name="password" 
+                                required 
+                                class="form-input block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="••••••••"
+                                id="password"
+                            >
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <div class="mt-1 relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <input 
+                                type="password" 
+                                name="confirmPassword" 
+                                required 
+                                class="form-input block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="••••••••"
+                                id="confirmPassword"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Strength Indicator -->
+                <div class="hidden" id="passwordStrength">
+                    <div class="h-2 bg-gray-200 rounded-full">
+                        <div class="h-2 rounded-full progress-bar" id="strengthBar"></div>
+                    </div>
+                    <p class="text-sm mt-1" id="strengthText"></p>
+                </div>
+
+                <!-- Academic Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="degree" class="block text-sm font-medium text-gray-700">Degree</label>
+                        <div class="mt-1 select-wrapper">
+                            <select 
+                                name="degree" 
+                                id="degree" 
+                                required 
+                                class="form-input block w-full py-3 pl-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent appearance-none"
+                            >
+                                <option value="">Select Degree</option>
+                                <option value="BSc">BSc</option>
+                                <option value="BTech">BTech</option>
+                                <option value="MSc">MSc</option>
+                                <option value="MTech">MTech</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="branch" class="block text-sm font-medium text-gray-700">Branch</label>
+                        <div class="mt-1 select-wrapper">
+                            <select 
+                                name="branch" 
+                                id="branch" 
+                                required 
+                                class="form-input block w-full py-3 pl-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent appearance-none"
+                            >
+                                <option value="">Select Branch</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="flex items-center">
+                    <input 
+                        type="checkbox" 
+                        id="terms" 
+                        required 
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    >
+                    <label for="terms" class="ml-2 block text-sm text-gray-700">
+                        I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-500">Terms of Service</a> and <a href="#" class="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button 
+                        type="submit" 
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+                    >
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-user-plus"></i>
+                        </span>
+                        Create Account
+                    </button>
+                </div>
+            </form>
+
+            <!-- Login Link -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600 mb-2">
+                    Already have an account?
+                    <a href="/Login" class="font-medium text-indigo-600 hover:text-indigo-500 ml-1">
+                        Sign in instead
+                    </a>
+                </p>
+                <a href="/" class="text-gray-600 hover:text-blue-600 mt-2 transition-colors duration-300">
+                    <i class="fas fa-home mr-2"></i>Back to Home
+                </a>
             </div>
-        </form>
-        <p class="text-center text-sm text-gray-600">Already have an account? <a href="/Login" class="text-indigo-500 hover:underline">Login</a></p>
+        </div>
+        
     </div>
 
+    <script>
+        // Branch options
+        const branchOptions = {
+            "BSc": ["Physics", "Chemistry", "Mathematics", "Biology"],
+            "BTech": ["Computer Science", "Electrical", "Mechanical", "Civil","Electronics","Information Technology"],
+            "MSc": ["Physics", "Chemistry", "Mathematics", "Biology"],
+            "MTech": ["Computer Science", "Electrical", "Mechanical", "Civil"]
+        };
+
+        // Handle degree selection
+        const degreeField = document.getElementById('degree');
+        const branchField = document.getElementById('branch');
+
+        degreeField.addEventListener('change', function() {
+            const selectedDegree = this.value;
+            branchField.innerHTML = '<option value="">Select Branch</option>';
+
+            if (branchOptions[selectedDegree]) {
+                branchOptions[selectedDegree].forEach(function(branch) {
+                    const option = document.createElement('option');
+                    option.value = branch;
+                    option.textContent = branch;
+                    branchField.appendChild(option);
+                });
+            }
+        });
+
+        // Password strength checker
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+        const strengthIndicator = document.getElementById('passwordStrength');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            let message = '';
+
+            strengthIndicator.classList.remove('hidden');
+
+            if (password.length >= 8) strength += 25;
+            if (password.match(/[a-z]/)) strength += 25;
+            if (password.match(/[A-Z]/)) strength += 25;
+            if (password.match(/[0-9]/)) strength += 25;
+
+            strengthBar.style.width = strength + '%';
+
+            if (strength <= 25) {
+                strengthBar.className = 'h-2 rounded-full progress-bar bg-red-500';
+                message = 'Weak password';
+            } else if (strength <= 50) {
+                strengthBar.className = 'h-2 rounded-full progress-bar bg-orange-500';
+                message = 'Moderate password';
+            } else if (strength <= 75) {
+                strengthBar.className = 'h-2 rounded-full progress-bar bg-yellow-500';
+                message = 'Good password';
+            } else {
+                strengthBar.className = 'h-2 rounded-full progress-bar bg-green-500';
+                message = 'Strong password';
+            }
+
+            strengthText.textContent = message;
+            strengthText.className = 'text-sm mt-1 text-' + strengthBar.className.split('bg-')[1].split('-')[0] + '-500';
+        });
+
+        // Password match validation
+        const confirmPassword = document.getElementById('confirmPassword');
+        const form = document.getElementById('signupForm');
+
+        form.addEventListener('submit', function(e) {
+            if (passwordInput.value !== confirmPassword.value) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
+    </script>
 </body>
 </html>

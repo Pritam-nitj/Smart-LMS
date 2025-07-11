@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book QR Code Scanner</title>
+    <!-- Font for enhanced styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- External QR Code Scanner library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js"
+        integrity="sha512-k/KAe4Yff9EUdYI5/IAHlwUswqeipP+Cp5qnrsUjTPCgl51La2/JhyyjNciztD7mWNKLSXci48m7cctATKfLlQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        /* General styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Header styling */
+        header {
+            background-color: #4a90e2;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 500;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main container styling */
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+        }
+
+        /* Reader (scanner) container */
+        #reader {
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #4a90e2;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        /* Result message styling */
+        #result {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #4a90e2;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: auto;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        #flash-m{
+            background-color: rgb(42, 246, 42);
+        }
+    </style>
+</head>
+
+<body data-rsssl=1>
+    <header>Scan the Book QR Code</header>
+    <div id="flash-m"></div>
+    <main>
+        <a href="/Librarian" class="text-blue-500 mb-5 inline-block hover:text-blue-700 transition">← Back to Dashboard</a>
+        <a href="/RQR" class="text-blue-500 mb-5 inline-block hover:text-blue-700 transition">Return a Book</a>
+        <div id="reader"></div>
+        <div id="result"></div>
+    </main>
+    <footer>&copy; 2024 Library Management System</footer>
+
+    <script>
+        // Initialize the scanner
+        const scanner = new Html5QrcodeScanner('reader', {
+            qrbox: { width: 300, height: 300 },
+            fps: 20,
+        });
+
+        // Success callback function
+        function success(result) {
+            fetch('/BQR', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ bookIdd: result })
+            })
+            .then(response => response.json())
+            .then(data =>{
+                if (data.success){
+                    scanner.clear();
+                    document.getElementById('reader').remove();
+                    localStorage.setItem('flash', data.message);
+                    setTimeout(()=>{
+                        window.location.href = '/BQR';
+                    },1000)
+                } else{
+                    scanner.clear();
+                    document.getElementById('reader').remove();
+                    localStorage.setItem('flash', data.message);
+                    setTimeout(()=>{
+                        window.location.href = '/BQR';
+                    },1000)
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Error callback function
+        function error(err) {
+            console.error(err);
+        }
+
+        // Render scanner
+        scanner.render(success, error); 
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+        // Check if there's a flash message in local storage
+        const flashMessage = localStorage.getItem('flash');
+        if (flashMessage) {
+            // Display the flash message in an alert or a specific element
+            const flashDiv = document.getElementById('flash-m');
+            flashDiv.textContent = flashMessage;
+            
+            localStorage.removeItem('flash');
+
+            setTimeout(() => flashDiv.remove(), 10000);
+        }
+    });
+    </script>
+</body>
+
+</html>

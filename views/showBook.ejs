@@ -3,41 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Books - Library</title>
+    <title>Library Collection</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
 </head>
-<body class="bg-gray-900 text-white min-h-screen p-10">
-
-    <!-- Navigation Links -->
-    <div class="flex justify-between items-center mb-10">
-        <h1 class="text-4xl font-bold tracking-tight">All Books</h1>
-        <div>
-            <a href="/add" class="text-lg text-blue-400 hover:text-blue-300 mr-5">Add New Books</a>
-            <a href="/Librarian" class="text-lg text-blue-400 hover:text-blue-300">Back to Home</a>
-        </div>
-    </div>
-
-    <!-- Books Section -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        <% if (books.length > 0) { %>
-            <% books.forEach(function(book) { %>
-                <!-- Book Card -->
-                <div class="bg-zinc-800 p-4 rounded-lg shadow-lg transition-transform transform hover:scale-105">
-                    <!-- Book Image -->
-                    <div class="h-48 w-full bg-gray-700 rounded-lg overflow-hidden mb-4">
-                        <img class="w-full h-full object-cover" src="<%= book.image %>" alt="Book Cover">
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-3xl font-bold tracking-tight">Library Collection</h1>
+                    <div class="flex items-center md:hidden">
+                        <button onclick="toggleMenu()" class="text-gray-400 hover:text-white">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
                     </div>
-                    <!-- Book Details -->
-                    <h3 class="text-lg font-semibold mb-1">Title: <%= book.title %></h3>
-                    <p class="text-gray-400">Author: <%= book.author %></p>
-                    <p class="text-gray-400">ISBN: <%= book.ISBN %></p>
-                    <p class="text-gray-400">Copies: <%= book.copies %></p>
                 </div>
-            <% }) %>
-        <% } else { %>
-            <p class="text-gray-500 text-center w-full">No Books Available Yet!</p>
-        <% } %>
-    </div>
 
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-md mx-auto md:mx-4">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            placeholder="Search books by title, author, or ISBN..." 
+                            class="w-full px-4 py-2 pl-10 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            oninput="filterBooks()"
+                        >
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div id="navLinks" class="hidden md:flex items-center space-x-4">
+                    <a href="/add" class="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                        <i class="fas fa-plus mr-2"></i>
+                        Add New Book
+                    </a>
+                    <a href="/Librarian" class="flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+                        <i class="fas fa-home mr-2"></i>
+                        Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 pt-28 pb-12">
+        <!-- Books Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <% if (books.length > 0) { %>
+                <% books.forEach(function(book) { %>
+                    <div class="book-card bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
+                        <!-- Book Image -->
+                        <div class="relative h-56 bg-gray-700">
+                            <img 
+                                src="<%= book.image %>" 
+                                alt="<%= book.title %>"
+                                class="w-full h-full object-cover"
+                                onerror="this.src='/default-book.jpg'"
+                            >
+                            <div class="absolute top-2 right-2">
+                                <span class="px-2 py-1 bg-blue-600 rounded-full text-sm">
+                                    <%= book.copies %> copies
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Book Details -->
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold line-clamp-2 mb-2"><%= book.title %></h3>
+                            <div class="space-y-2 text-gray-400">
+                                <p class="flex items-center">
+                                    <i class="fas fa-user-edit w-5 mr-2"></i>
+                                    <%= book.author %>
+                                </p>
+                                <p class="flex items-center">
+                                    <i class="fas fa-barcode w-5 mr-2"></i>
+                                    <%= book.ISBN %>
+                                </p>
+                                <p class="flex items-center">
+                                    <i class="fas fa-map-marker-alt w-5 mr-2"></i>
+                                    Rack <%= book.rackno %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-books text-4xl text-gray-600 mb-4"></i>
+                    <p class="text-xl text-gray-400">No books available in the library yet!</p>
+                    <a href="/add" class="inline-block mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                        Add Your First Book
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('hidden');
+        }
+
+        // Search functionality
+        function filterBooks() {
+            const searchInput = document.getElementById('searchInput');
+            const filter = searchInput.value.toLowerCase();
+            const bookCards = document.getElementsByClassName('book-card');
+
+            Array.from(bookCards).forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const author = card.querySelector('p:nth-child(1)').textContent.toLowerCase();
+                const isbn = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+
+                if (title.includes(filter) || author.includes(filter) || isbn.includes(filter)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Handle image loading errors
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = '/default-book.jpg';
+                });
+            });
+        });
+    </script>
 </body>
 </html>

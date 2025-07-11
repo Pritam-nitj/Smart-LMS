@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 mongoose.connect(`mongodb://127.0.0.1:27017/LMS`)
 
 const userSchema = mongoose.Schema({
-    role: String,
+    role: {
+        type: String,
+        default: "member"
+    },
     username: String,
     fathersName: String,
     email: String,
@@ -27,7 +30,20 @@ const userSchema = mongoose.Schema({
         },
     ],
     contact: Number,
-    picture: String
+    profilepic: {
+        type: String,
+        default: ''
+    },
+    Fine: {
+        type: Number,
+        default: 0
+    },
+    Degree: String,
+    Branch : String,
+    JoinDate: {
+        type: Date,
+        default : new Date()
+    }
 })
 
 module.exports = mongoose.model("user",userSchema);

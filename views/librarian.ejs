@@ -3,181 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Librarian Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-        }
-        header {
-            background-color: #343a40;
-            color: #ffffff;
-            padding: 20px 0;
-            text-align: center;
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        nav {
-            margin-bottom: 30px;
-        }
-        nav .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .navbar-nav .nav-link {
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #007bff;
-        }
-        .container {
-            margin-top: 20px;
-        }
-        .card {
-            border-radius: 10px;
-            border: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-        .card-header {
-            background-color: #343a40;
-            color: #ffffff;
-            font-size: 1.3rem;
-            font-weight: bold;
-            text-align: center;
-            padding: 15px 0;
-        }
-        .form-group label {
-            font-weight: bold;
-            color: #343a40;
-        }
-        .form-control {
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-            padding: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-        .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            padding: 10px 15px;
-            font-size: 1rem;
-            font-weight: 500;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-        footer {
-            background-color: #343a40;
-            color: #ffffff;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: 30px;
-            font-size: 0.9rem;
-        }
-    </style>
+    <title>LMS Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-
-    <header>
-        <h1>Librarian Dashboard</h1>
-    </header>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Welcome <%= LibInfo.username %> </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/report">Book Issue Report</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/showBook">Show Books</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/read">Show Members</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </li>
-                </ul>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-gray-200 fixed w-full z-30 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="flex items-center">
+                        <i class="fas fa-book-reader text-indigo-600 text-2xl"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-800">Library MS</span>
+                    </span>
+                </div>
+                <div class="flex items-center">
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="/report" class="flex items-center px-4 py-2 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg transition-all duration-200">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            <span>Reports</span>
+                        </a>
+                        <a href="/showBook" class="flex items-center px-4 py-2 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg transition-all duration-200">
+                            <i class="fas fa-book mr-2"></i>
+                            <span>Books</span>
+                        </a>
+                        <a href="/read" class="flex items-center px-4 py-2 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg transition-all duration-200">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>Members</span>
+                        </a>
+                        <button onclick="window.location.href='/logout'" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <!-- Two blocks for Issue and Return Books -->
-        <div class="row">
-            <!-- Issue Book Section -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        Issue a Book
+    <!-- Main Content -->
+    <main class="flex-grow pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Alert Messages -->
+            <div class="mt-8">
+                <% if(success && success!= '') { %>
+                    <div class="flex items-center p-4 mb-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg" role="alert">
+                        <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                        <span class="text-green-700"><%=success%></span>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Fill in the details to issue a book</h5>
-                        <form id="issueForm" action="/issue" method="POST">
-                            <div class="form-group">
-                                <label for="issueBookID">Book ID</label>
-                                <input type="text" class="form-control" id="issueBookID" name="bookIdd" placeholder="Enter Book ID" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="issueMemberID">Member ID</label>
-                                <input type="text" class="form-control" id="issueMemberID" name="Uemail" placeholder="Enter Member ID" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Issue Book</button>
-                        </form>
+                <% } else if(err && err != '') { %>
+                    <div class="flex items-center p-4 mb-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg" role="alert">
+                        <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                        <span class="text-red-700"><%=err%></span>
+                    </div>
+                <% } %>
+            </div>
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-3">Welcome to Your Dashboard</h1>
+                <p class="text-gray-600 text-lg">Manage your library efficiently and effectively</p>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-blue-50 text-blue-600">
+                            <i class="fas fa-book text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-gray-500 text-sm">Total Books</h3>
+                            <p class="text-2xl font-semibold text-gray-800"><%=bookCount%></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-50 text-green-600">
+                            <i class="fas fa-user-check text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-gray-500 text-sm">Total Members</h3>
+                            <p class="text-2xl font-semibold text-gray-800"><%=memberCount%></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-yellow-50 text-yellow-600">
+                            <i class="fas fa-clock text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-gray-500 text-sm">Total Books Due</h3>
+                            <p class="text-2xl font-semibold text-gray-800"><%=dueBooks?.[0]?.totalDueBooks ?? 0%></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-purple-50 text-purple-600">
+                            <i class="fas fa-book-reader text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-gray-500 text-sm">Books Issued</h3>
+                            <p class="text-2xl font-semibold text-gray-800"><%=bookIssued%></p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Return Book Section -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        Return a Book
+            <!-- Quick Actions -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="window.location.href='/EQR'" class="flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-200 transform hover:scale-105 shadow-md">
+                    <i class="fas fa-bolt mr-2"></i>
+                    Quick Issue
+                </button>
+                <button onclick="window.location.href='/RQR'" class="flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-200 transform hover:scale-105 shadow-md">
+                    <i class="fas fa-undo-alt mr-2"></i>
+                    Quick Return
+                </button>
+            </div>
+
+            <!-- Main Actions Grid -->
+            <div class="grid md:grid-cols-2 gap-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <!-- Issue Book Card -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transition-transform hover:scale-[1.02] duration-300">
+                    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-5">
+                        <h2 class="text-2xl font-semibold text-white flex items-center">
+                            <i class="fas fa-book-open mr-3"></i>
+                            Issue a Book
+                        </h2>
+                        <p class="text-indigo-100 mt-1">Assign a book to a member</p>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Fill in the details to return a book</h5>
-                        <form id="returnForm" action="/return" method="POST">
-                            <div class="form-group">
-                                <label for="returnBookID">Book ID</label>
-                                <input type="text" class="form-control" id="returnBookID" name="bookID" placeholder="Enter Book ID" required>
+                    
+                    <div class="p-8">
+                        <form id="issueForm" action="/issue" method="POST" class="space-y-6">
+                            <div class="space-y-2">
+                                <label for="issueBookID" class="text-sm font-medium text-gray-700 block">
+                                    Book ID
+                                </label>
+                                <div class="relative">
+                                    <i class="fas fa-book absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    <input type="text" 
+                                        id="issueBookID" 
+                                        name="bookIdd" 
+                                        required
+                                        class="w-full pl-12 pr-4 py-3 border border-gray-400 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-800 placeholder-gray-400"
+                                        placeholder="Enter Book ID">
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Return Book</button>
+                            
+                            <div class="space-y-2">
+                                <label for="issueMemberID" class="text-sm font-medium text-gray-700 block">
+                                    Member ID
+                                </label>
+                                <div class="relative">
+                                    <i class="fas fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    <input type="text" 
+                                        id="issueMemberID" 
+                                        name="Uemail" 
+                                        required
+                                        class="w-full pl-12 pr-4 py-3 border border-gray-400 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-800 placeholder-gray-400"
+                                        placeholder="Enter Member ID">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" 
+                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center group">
+                                <i class="fas fa-check mr-2 group-hover:scale-110 transition-transform"></i>
+                                Issue Book
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Return Book Card -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transition-transform hover:scale-[1.02] duration-300">
+                    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-5">
+                        <h2 class="text-2xl font-semibold text-white flex items-center">
+                            <i class="fas fa-undo mr-3"></i>
+                            Return a Book
+                        </h2>
+                        <p class="text-indigo-100 mt-1">Process a book return</p>
+                    </div>
+                    
+                    <div class="px-8 py-16">
+                        <form id="returnForm" action="/return" method="POST" class="space-y-6">
+                            <div class="space-y-2">
+                                <label for="returnBookID" class="text-sm font-medium text-gray-700 block">
+                                    Book ID
+                                </label>
+                                <div class="relative">
+                                    <i class="fas fa-book-reader absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    <input type="text" 
+                                        id="returnBookID" 
+                                        name="bookID" 
+                                        required
+                                        class="w-full pl-12 pr-4 py-3 border border-gray-400 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-gray-800 placeholder-gray-400"
+                                        placeholder="Enter Book ID">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" 
+                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center group">
+                                <i class="fas fa-check mr-2 group-hover:scale-110 transition-transform"></i>
+                                Return Book
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <footer>
-        <p>&copy; 2024 Library Management System. All Rights Reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <p class="text-gray-600">&copy; 2024 Library Management System</p>
+                <div class="flex space-x-4">
+                    <a href="" class="text-gray-400 hover:text-gray-600">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="" class="text-gray-400 hover:text-gray-600">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     </footer>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

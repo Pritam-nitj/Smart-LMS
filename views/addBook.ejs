@@ -4,69 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Librarian - Add Books</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
     <!-- Header -->
-    <header class="bg-gray-800 text-white py-6 text-center shadow-md">
-        <h1 class="text-4xl font-bold">Add New Book</h1>
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2">Add New Book</h1>
+                    <p class="text-blue-100">Expand your library collection</p>
+                </div>
+                <div class="space-x-4">
+                    <a href="/showBook" class="inline-flex items-center px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition">
+                        <i class="fas fa-books mr-2"></i>
+                        View All Books
+                    </a>
+                    <a href="/Librarian" class="inline-flex items-center px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition">
+                        <i class="fas fa-home mr-2"></i>
+                        Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <!-- Main Content -->
-    <section class="flex-grow mt-8">
-        <!-- Links -->
-        <div class="container mx-auto mb-8 ml-40">
-            <a href="/showBook" class="text-blue-600 hover:text-blue-800 text-lg ">Show All Books</a>
-            <span class="mx-4">|</span>
-            <a href="/Librarian" class="text-blue-600 hover:text-blue-800 text-lg">Back To Home</a>
-        </div>
+    <!-- Alert Messages -->
+    <div class="container mx-auto px-4 mt-6">
+        <%if(success && success!= ''){ %>
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6 flex items-center">
+                <i class="fas fa-check-circle mr-3"></i>
+                <%=success%>
+            </div>
+        <%}else if(err && err != ''){ %>
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6 flex items-center">
+                <i class="fas fa-exclamation-circle mr-3"></i>
+                <%=err%>
+            </div>
+        <%}  %>
+    </div>
 
-        <!-- Form Card -->
-        <div class="container mx-auto max-w-lg">
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h2 class="text-2xl font-semibold text-gray-700 mb-6">Add a New Book</h2>
-                <form action="/addBook" method="POST" id="addBooksForm" class="space-y-6">
-                    <!-- Book Image URL -->
-                    <div>
-                        <label for="image" class="block text-gray-700 font-medium">Book Image URL</label>
-                        <input type="text" name="image" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter Book Image URL">
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <!-- Form Header -->
+                <div class="bg-gray-50 px-6 py-4 border-b">
+                    <h2 class="text-xl font-semibold text-gray-800">Book Details</h2>
+                    <p class="text-gray-500 text-sm mt-1">Fill in the information for the new book</p>
+                </div>
+
+                <!-- Form -->
+                <form action="/addBook" method="POST" id="addBooksForm" class="p-6 space-y-6">
+                    <!-- Book Image and Title Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-6">
+                            <div>
+                                <label for="image" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-image mr-2"></i>Book Cover URL
+                                </label>
+                                <input type="text" name="image" 
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="https://example.com/book-cover.jpg">
+                            </div>
+
+                            <div>
+                                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-book mr-2"></i>Book Title
+                                </label>
+                                <input type="text" name="title" required
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Enter book title">
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label for="author" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-user-edit mr-2"></i>Author
+                                </label>
+                                <input type="text" name="author" required
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Author's name">
+                            </div>
+
+                            <div>
+                                <label for="ISBN" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <i class="fas fa-barcode mr-2"></i>ISBN
+                                </label>
+                                <input type="text" name="ISBN" required
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Enter ISBN number">
+                            </div>
+                        </div>
                     </div>
-                    <!-- Book Title -->
-                    <div>
-                        <label for="title" class="block text-gray-700 font-medium">Book Title</label>
-                        <input type="text" name="title" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter Book Title" required>
+
+                    <!-- Additional Details Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label for="copies" class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="fas fa-copy mr-2"></i>Number of Copies
+                            </label>
+                            <input type="number" name="copies" required
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                placeholder="Quantity">
+                        </div>
+
+                        <div>
+                            <label for="rackno" class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="fas fa-bookmark mr-2"></i>Rack Number
+                            </label>
+                            <input type="text" name="rackno" required
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                placeholder="Enter rack location">
+                        </div>
+
+                        <!-- <div>
+                            <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
+                                <i class="fas fa-tags mr-2"></i>Category
+                            </label>
+                            <select name="category" 
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="">Select Category</option>
+                                <option value="fiction">Fiction</option>
+                                <option value="non-fiction">Non-Fiction</option>
+                                <option value="academic">Academic</option>
+                                <option value="reference">Reference</option>
+                            </select>
+                        </div> -->
                     </div>
-                    <!-- Author -->
+
+                    <!-- Description Section -->
                     <div>
-                        <label for="author" class="block text-gray-700 font-medium">Author</label>
-                        <input type="text" name="author" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter Author's Name" required>
+                        <label for="desc" class="block text-sm font-medium text-gray-700 mb-1">
+                            <i class="fas fa-align-left mr-2"></i>Book Description
+                        </label>
+                        <textarea name="desc" required rows="4"
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="Enter a detailed description of the book"></textarea>
                     </div>
-                    <!-- ISBN -->
-                    <div>
-                        <label for="ISBN" class="block text-gray-700 font-medium">ISBN</label>
-                        <input type="text" name="ISBN" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter ISBN" required>
-                    </div>
-                    <!-- Number of Copies -->
-                    <div>
-                        <label for="copies" class="block text-gray-700 font-medium">Number of Copies</label>
-                        <input type="number" name="copies" class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter number of copies" required>
-                    </div>
+
                     <!-- Submit Button -->
-                    <div>
-                        <button type="submit" class="w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    <div class="flex justify-end space-x-4">
+                        <button type="reset" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                            Clear Form
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                            <i class="fas fa-plus mr-2"></i>
                             Add Book
                         </button>
                     </div>
                 </form>
             </div>
         </div>
-    </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4 text-center mt-8">
-        <p>&copy; 2024 Library Management System Project. All Rights Reserved.</p>
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2024 Library Management System</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-blue-400 transition-colors">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="hover:text-blue-400 transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
     </footer>
 
+    <script>
+        const form = document.getElementById('addBooksForm');
+        form.addEventListener('submit', function(e) {
+            const copies = document.querySelector('input[name="copies"]').value;
+            
+            if (copies < 1) {
+                e.preventDefault();
+                alert('Number of copies must be at least 1');
+            }
+            
+        });
+    </script>
 </body>
 </html>

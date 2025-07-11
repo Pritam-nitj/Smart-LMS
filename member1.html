@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Member Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background-color: #def7ec;
+            color: #03543f;
+        }
+
+        .status-borrowed {
+            background-color: #fde8e8;
+            color: #9b1c1c;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+        }
+
+        .skeleton {
+            animation: shimmer 2s infinite linear;
+            background: linear-gradient(to right, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+            background-size: 1000px 100%;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .floating-stats {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with User Stats -->
+    <header class="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-start">
+                <div>
+                    <div class="flex items-center gap-4">
+                        <img class="w-16 h-16 rounded-full border-4 border-white shadow-lg" 
+                             src="<%= UserInfo.profilepic || '/api/placeholder/150/150' %>" 
+                             alt="Profile Picture">
+                        <div>
+                            <h1 class="text-3xl font-bold">Welcome back, <%= UserInfo.username %>!</h1>
+                            <p class="text-blue-200 mt-1">Member since <%= UserInfo.joinDate %></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="floating-stats glass-card px-6 py-4 text-gray-800 rounded-lg">
+                        <div class="text-2xl font-bold"><%= UserInfo.borrowedBooks || 0 %></div>
+                        <div class="text-sm text-gray-600">Books Borrowed</div>
+                    </div>
+                    <div class="floating-stats glass-card px-6 py-4 text-gray-800 rounded-lg">
+                        <div class="text-2xl font-bold"><%= UserInfo.readingList || 0 %></div>
+                        <div class="text-sm text-gray-600">Reading List</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation and Search -->
+    <nav class="bg-white shadow-md sticky top-0 z-50 py-4">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between gap-4">
+                <div class="flex-1 flex items-center gap-4">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" 
+                               id="searchInput"
+                               placeholder="Search books by title, author, ISBN..." 
+                               class="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="filterCategory" class="px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500">
+                            <option value="">All Categories</option>
+                            <option value="fiction">Fiction</option>
+                            <option value="non-fiction">Non-Fiction</option>
+                            <option value="science">Science</option>
+                            <option value="history">History</option>
+                        </select>
+                        <select id="sortBy" class="px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500">
+                            <option value="relevance">Sort by Relevance</option>
+                            <option value="title">Sort by Title</option>
+                            <option value="author">Sort by Author</option>
+                            <option value="date">Sort by Date Added</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="readingListBtn" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-book-reader mr-2"></i>
+                        Reading List
+                    </button>
+                    <button onclick="window.location.href='/logout'" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-10">
+        <!-- Book Categories -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Popular Categories</h2>
+            <div class="flex gap-4 overflow-x-auto pb-4">
+                <button class="category-btn px-6 py-3 bg-blue-600 text-white rounded-lg whitespace-nowrap">
+                    All Books
+                </button>
+                <button class="category-btn px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 rounded-lg whitespace-nowrap shadow-sm">
+                    Fiction
+                </button>
+                <button class="category-btn px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 rounded-lg whitespace-nowrap shadow-sm">
+                    Non-Fiction
+                </button>
+                <button class="category-btn px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 rounded-lg whitespace-nowrap shadow-sm">
+                    Science
+                </button>
+                <button class="category-btn px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 rounded-lg whitespace-nowrap shadow-sm">
+                    History
+                </button>
+            </div>
+        </div>
+
+        <!-- Books Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="booksGrid">
+            <% if (books && books.length > 0) { %>
+                <% books.forEach(function(book) { %>
+                    <div class="book-card glass-card rounded-lg p-4 relative">
+                        <div class="book-status <%= book.copies > 0 ? 'status-available' : 'status-borrowed' %>">
+                            <%= book.copies > 0 ? 'Available' : 'Borrowed' %>
+                        </div>
+                        <div class="aspect-w-3 aspect-h-4 bg-gray-100 rounded-lg overflow-hidden">
+                            <img src="<%= book.image %>" 
+                                 loading="lazy" 
+                                 alt="<%= book.title %>" 
+                                 class="w-full h-full object-cover transform transition-transform hover:scale-105">
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-lg font-semibold text-gray-800 line-clamp-2"><%= book.title %></h3>
+                            <p class="text-gray-600 mt-2">By <%= book.author %></p>
+                            <div class="mt-3 flex items-center text-sm text-gray-500">
+                                <i class="fas fa-book-open mr-2"></i>
+                                <span><%= book.copies %> copies available</span>
+                            </div>
+                            <div class="mt-2 flex items-center text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Rack <%= book.rackno %></span>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                    <%= book.copies > 0 ? 'Borrow Now' : 'Join Waitlist' %>
+                                </button>
+                                <button class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="far fa-bookmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="col-span-full flex flex-col items-center justify-center py-12 text-gray-500">
+                    <i class="fas fa-books text-6xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">No Books Available</h3>
+                    <p class="text-gray-400">Check back later for new additions to our library</p>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-8">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Library Hours</h4>
+                    <div class="space-y-2">
+                        <p class="flex items-center">
+                            <i class="far fa-clock mr-2"></i>
+                            Mon-Fri: 9 AM - 8 PM
+                        </p>
+                        <p class="flex items-center">
+                            <i class="far fa-clock mr-2"></i>
+                            Sat: 10 AM - 6 PM
+                        </p>
+                        <p class="flex items-center">
+                            <i class="far fa-clock mr-2"></i>
+                            Sun: Closed
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="/about" class="hover:text-white transition-colors">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                About Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/faq" class="hover:text-white transition-colors">
+                                <i class="fas fa-question-circle mr-2"></i>
+                                FAQ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/terms" class="hover:text-white transition-colors">
+                                <i class="fas fa-file-alt mr-2"></i>
+                                Terms & Conditions
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact Us</h4>
+                    <div class="space-y-2">
+                        <p class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            library@example.com
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-phone mr-2"></i>
+                            +91 9876540000
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            123 Library Street
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Stay Connected</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-facebook fa-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter fa-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center"><p class="text-sm">&copy; 2024 Library Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const searchInput = document.getElementById('searchInput');
+            const filterCategory = document.getElementById('filterCategory');
+            const sortBy = document.getElementById('sortBy');
+            const readingListBtn = document.getElementById('readingListBtn');
+            const booksGrid = document.getElementById('booksGrid');
+            const categoryBtns = document.querySelectorAll('.category-btn');
+
+            // State management
+            let books =  JSON.stringify(books);
+            let filteredBooks = [...books];
+            let readingList = JSON.parse(localStorage.getItem('readingList')) || [];
+
+            // Initialize loading state
+            let isLoading = false;
+            let currentPage = 1;
+            const booksPerPage = 12;
+
+            // Functions
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            function showLoadingState() {
+                const loadingTemplate = `
+                    <div class="book-card glass-card rounded-lg p-4 relative">
+                        <div class="aspect-w-3 aspect-h-4 skeleton rounded-lg"></div>
+                        <div class="mt-4">
+                            <div class="h-6 skeleton rounded w-3/4"></div>
+                            <div class="h-4 skeleton rounded w-1/2 mt-2"></div>
+                            <div class="h-4 skeleton rounded w-1/4 mt-2"></div>
+                            <div class="mt-4 flex gap-2">
+                                <div class="h-10 skeleton rounded flex-1"></div>
+                                <div class="h-10 w-10 skeleton rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                const loadingCards = Array(4).fill(loadingTemplate).join('');
+                booksGrid.innerHTML = loadingCards;
+            }
+
+            function filterBooks() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const category = filterCategory.value;
+                
+                filteredBooks = books.filter(book => {
+                    const matchesSearch = book.title.toLowerCase().includes(searchTerm) ||
+                                       book.author.toLowerCase().includes(searchTerm) ||
+                                       book.ISBN.toLowerCase().includes(searchTerm);
+                    
+                    const matchesCategory = !category || book.category === category;
+                    
+                    return matchesSearch && matchesCategory;
+                });
+
+                sortBooks();
+                renderBooks();
+            }
+
+            function sortBooks() {
+                const sortValue = sortBy.value;
+                
+                filteredBooks.sort((a, b) => {
+                    switch(sortValue) {
+                        case 'title':
+                            return a.title.localeCompare(b.title);
+                        case 'author':
+                            return a.author.localeCompare(b.author);
+                        case 'date':
+                            return new Date(b.dateAdded) - new Date(a.dateAdded);
+                        default:
+                            return 0;
+                    }
+                });
+            }
+
+            function renderBooks() {
+                if (filteredBooks.length === 0) {
+                    booksGrid.innerHTML = `
+                        <div class="col-span-full flex flex-col items-center justify-center py-12 text-gray-500">
+                            <i class="fas fa-search text-6xl mb-4"></i>
+                            <h3 class="text-xl font-semibold mb-2">No Books Found</h3>
+                            <p class="text-gray-400">Try adjusting your search criteria</p>
+                            <button onclick="location.reload()" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                View All Books
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const start = (currentPage - 1) * booksPerPage;
+                const end = start + booksPerPage;
+                const booksToShow = filteredBooks.slice(start, end);
+
+                const booksHTML = booksToShow.map(book => `
+                    <div class="book-card glass-card rounded-lg p-4 relative">
+                        <div class="book-status ${book.copies > 0 ? 'status-available' : 'status-borrowed'}">
+                            ${book.copies > 0 ? 'Available' : 'Borrowed'}
+                        </div>
+                        <div class="aspect-w-3 aspect-h-4 bg-gray-100 rounded-lg overflow-hidden">
+                            <img src="${book.image}" 
+                                 loading="lazy" 
+                                 alt="${book.title}" 
+                                 class="w-full h-full object-cover transform transition-transform hover:scale-105">
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-lg font-semibold text-gray-800 line-clamp-2">${book.title}</h3>
+                            <p class="text-gray-600 mt-2">By ${book.author}</p>
+                            <div class="mt-3 flex items-center text-sm text-gray-500">
+                                <i class="fas fa-book-open mr-2"></i>
+                                <span>${book.copies} copies available</span>
+                            </div>
+                            <div class="mt-2 flex items-center text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Rack ${book.rackno}</span>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button onclick="handleBorrow('${book.ISBN}')" 
+                                        class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                    ${book.copies > 0 ? 'Borrow Now' : 'Join Waitlist'}
+                                </button>
+                                <button onclick="toggleReadingList('${book.ISBN}')"
+                                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="far ${readingList.includes(book.ISBN) ? 'fas' : 'far'} fa-bookmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                booksGrid.innerHTML = booksHTML;
+            }
+
+            function handleBorrow(isbn) {
+                // Implement borrowing logic here
+                alert(`Borrowing book with ISBN: ${isbn}`);
+            }
+
+            function toggleReadingList(isbn) {
+                const index = readingList.indexOf(isbn);
+                if (index === -1) {
+                    readingList.push(isbn);
+                } else {
+                    readingList.splice(index, 1);
+                }
+                localStorage.setItem('readingList', JSON.stringify(readingList));
+                renderBooks();
+            }
+
+            // Infinite scroll
+            function handleScroll() {
+                if (isLoading) return;
+                
+                const endOfPage = window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 1000;
+                
+                if (endOfPage) {
+                    isLoading = true;
+                    currentPage++;
+                    
+                    // Simulate loading delay
+                    setTimeout(() => {
+                        renderBooks();
+                        isLoading = false;
+                    }, 500);
+                }
+            }
+
+            // Event Listeners
+            searchInput.addEventListener('input', debounce(() => {
+                currentPage = 1;
+                filterBooks();
+            }, 300));
+
+            filterCategory.addEventListener('change', () => {
+                currentPage = 1;
+                filterBooks();
+            });
+
+            sortBy.addEventListener('change', () => {
+                currentPage = 1;
+                sortBooks();
+                renderBooks();
+            });
+
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryBtns.forEach(b => b.classList.remove('bg-blue-600', 'text-white'));
+                    btn.classList.add('bg-blue-600', 'text-white');
+                    filterCategory.value = btn.textContent.trim().toLowerCase();
+                    currentPage = 1;
+                    filterBooks();
+                });
+            });
+
+            window.addEventListener('scroll', debounce(handleScroll, 100));
+
+            // Initialize
+            renderBooks();
+        });
+    </script>
+</body>
+</html>
