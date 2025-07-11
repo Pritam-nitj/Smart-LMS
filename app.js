@@ -18,6 +18,8 @@ const userModel = require('./models/user');
 const bookModel = require('./models/book');
 const bookCopyModel = require('./models/bookCopy');
 const isLoggedin = require("./middlewares/isLoggedin")
+const dotenv = require('dotenv');
+dotenv.config();
 
 app.set('view engine', 'ejs');
 
@@ -27,13 +29,8 @@ app.use(express.static(path.join(__dirname,'/public')));
 app.use(cookieParser())
 
 app.use(session({
-<<<<<<< HEAD
     secret: 'shhhhhhhuuuuttt',
     resave: true,
-=======
-    secret: '',
-    resave: false,
->>>>>>> 4e1a1817090557959b4abac9408aaa4e70f8d13d
     saveUninitialized: true,
     cookie: { secure: false} 
 }));
@@ -95,7 +92,6 @@ app.post("/login", async function (req, res, next) {
                         return res.status(500).send("Internal Server Error");
                     }
 
-<<<<<<< HEAD
                     if (result) {
                         // Generate JWT token
                         let token = jwt.sign({ email: user.email }, "shhhhhhhuuuuttt");
@@ -105,29 +101,6 @@ app.post("/login", async function (req, res, next) {
                         } else {
                             res.redirect('/Member');
                         }
-=======
-        // Compare passwords
-        bcrypt.compare(req.body.password, user.password, function (err, result) {
-            if (err) {
-                console.error("Error during password comparison:", err);
-                return res.status(500).send("Internal Server Error");
-            }
-
-            if (result) {
-                // Generate JWT token
-                let token = jwt.sign({ email: user.email }, "");
-                res.cookie("token", token);
-
-                // Check user role and set session
-                req.session.user = user;
-                req.session.save(function (err) {
-                    if (err) return next(err);
-
-                    if (user.role === "librarian") {
-                        res.redirect('/Librarian');
-                    } else if (user.role === "admin") {
-                        res.render("admin");
->>>>>>> 4e1a1817090557959b4abac9408aaa4e70f8d13d
                     } else {
                         req.flash('err','Access Denied !')
                         res.redirect('/login')
